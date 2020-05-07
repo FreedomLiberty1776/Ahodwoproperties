@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha256-ECB9bbROLGm8wOoEbHcHRxlHgzGqYpDtNTgDTyDz0wg=" crossorigin="anonymous" /> -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<title>Document</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+		<a class="navbar-brand" href="#" >
+			<img src="{% static 'logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+			Ahodwoproperties Payment System
+		</a>
+	</nav>
+	<section id="register" class="bg-light py-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 mx-auto">
+					<div class="card">
+						<div class="card-header bg-dark text-white border-none" >
+							<h4> <center><i class="fas fa-user-plus" style="text-align: center;"></i> Ahodwoproperties Properties</h4></center>
+						</div>
+						<div class="card-body">      
+								<form action="{% url 'properties' %}" method="POST">
+									{% csrf_token %}
+									<div class="form-group">
+									<label for="first_name">Location*</label>
+									<input type="text" name="location" class="form-control"   required>
+								</div>
+
+									<div class="form-group">
+									<label for="first_name">Address*</label>
+									<input type="text" name="address" class="form-control"   required>
+								</div>
+	
+								<div class="form-group">
+									<label for="last_name">Propperty Description</label>
+									<input type="text" name="description" class="form-control"    >
+								</div>
+								<div class="form-group">
+									<label for="last_name">Propperty ID*</label>
+									<input type="text" name="id" class="form-control"    required>
+								</div>
+						 
+								<div class="form-group">
+									<label for="address">Owner*</label>
+									<input type="text" name="owner" class="form-control"   required>
+								</div>
+								<div class="form-group">
+									<label for="address">Owner's Contact*</label>
+									<input type="number" name="contact" class="form-control"   required>
+								</div>
+								<!-- <span class="inlineinput">
+									<label for="">Service*</label>
+									<select name="service" class="form-control">
+									<option selected="true" disabled="disabled">Select Service</option>
+									<option value="Rent">Rent</option>
+									<option value="Selling">Selling</option>
+									<option value="Buying">Buying</option>
+									<option value="Leasing">Leasing</option>
+									<option value="Advertising">Advertising</option>
+									<option value="Service Charge">Service Charge</option>
+									</select>
+									</span> -->
+									<!-- <br> -->
+								<!-- <div class="form-group">
+									<label for="description">Description of Service*</label>
+									<textarea name="description" id="" cols="65%" rows="2" style="border-radius: 5px;"></textarea>
+								</div> -->
+								<div class="form-group">
+									<label for="address">Price ₵*</label>
+									<input type="number" name="price" class="form-control"  required>
+								</div>
+						 
+								<div class="form-group">
+									<label for="address">Image*</label>
+									<input type="file" id="img" name="image" accept="image/*">
+								</div>
+								<!-- <div class="form-group">
+									<label for="address">Payment Method*</label>
+									<input type="text" name="method" class="form-control"  required>
+								</div>
+								<div class="form-group">
+									<label for="address">Agent*</label>
+									<input type="text" name="agent" class="form-control"  required>
+								</div>
+						 
+								<div class="form-group">
+									<label for="date">Date</label>
+									<input type="date" name="date" class="form-control"  placeholder="Date of Birth"  required>
+								</div> -->
+							
+								
+								<input type="submit" value="Add Property" class="btn btn-secondary btn-block">
+							</form>
+					 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

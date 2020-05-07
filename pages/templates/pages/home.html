@@ -1,0 +1,120 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <head>
+    {% if title %}
+		  <title>  {{ title }} </title>
+    {% else %}
+      <title>Django Blog</title>
+    {% endif %}
+    </head>
+  <body >
+    <!-- Image and text -->
+  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <a class="navbar-brand" href="https://ahodwoproperties.com/"  target="_blank">
+        <img src="{% static 'logo.PNG' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        Ahodwo Homes and Properties
+      </a>
+      <!-- Navbar Right Side -->
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <div class="navbar-nav mr-auto">
+          <!-- <a class="nav-item nav-link" href="{% url 'dashboard' %}" style="margin-left: 10px;">Dashboard</a> -->
+        </div>
+        
+        <div class="navbar-nav">
+          {% if user.is_authenticated %}
+          <a class="nav-item nav-link" href="{% url 'logout' %}" style="margin-left: 1000px;">Logout</a>
+          {% else %}
+            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="margin-left:1100px; margin-right:35px;"></div>
+
+      </div>
+    </nav>
+    <div style="margin-left:3.5px; margin-right:35px;">
+      <h4 style="padding-bottom: 0px; text-align: center; margin-bottom:0px; margin-top: 10px;" >
+      {% if heading %}
+        {{ heading }}
+      {% else %}
+        <h3 style="text-align: center;">Ahodwo Homes and Properties</h3>
+      {% endif %}
+      </h4> 
+    
+      
+      <hr style="height:2px; border:none; color:#333; background-color:#333; margin-top:0px;" />
+
+
+
+        {% if request.user.is_authenticated %}
+            <p><strong> Welcome, {{ user.first_name }} {{ user.last_name }}. You have logged in as an agent at Ahodwo Homes and Properties.
+				{% endif %}
+     
+      <br>
+      <br>
+
+      <a href="{% url 'transaction' %}" text-decoration= none> Create Invoice</a> <br>
+    
+      <a href="{% url 'properties' %}" text-decoration= none> Add a Property</a>
+
+      <br>
+
+      <a href="{% url 'service' %}" text-decoration= none> Add Services</a>
+      <br>
+
+      <a href="{% url 'property_type' %}" text-decoration= none> Add Property Type</a>
+
+      
+  
+
+      <br>
+      <a href="{% url 'agent' %}" text-decoration= none> Add Agent</a>
+      <br>
+ 
+      <a href="{% url 'payment_method' %}" text-decoration= none> Add Payment Method</a>
+      <br>
+   
+
+
+      <hr style="height:2px; border:none; color:#333; background-color:#333;" />
+  </div>
+
+
+  
+
+    
+
+ <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+  <!-- Footer -->
+  <footer id="main-footer" class="py-4 bg-dark text-white text-center" style="position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;">
+    <div style="color:white; background-color: transparent"></div>Copyright &copy;
+    <span class="year"></span>  
+    <a href="https://digitalhorizon.dev" target="_blank"> Digital Horizon</a>
+   </div>
+      </footer>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+</html>
