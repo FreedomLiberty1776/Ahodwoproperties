@@ -162,3 +162,6 @@ def transaction(request):
 @login_required
 def dashboard(request):
 	return render(request, 'pages/home.html')
+
+def peace(request):
+	pass
