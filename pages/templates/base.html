@@ -1,0 +1,140 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- <style>
+      
+    
+      .table, thead, th, td {
+        text-transform: uppercase;
+        padding: 0.8rem;
+        border: 1px solid black;
+        table-layout: fixed ;
+        width: 100% ;
+        border-collapse: collapse ;
+      }
+
+      .table {
+        border: 2px solid black;
+        width: 100%;
+        margin-top: 2rem;
+      }
+      th, td  {
+        padding: 10px;
+        text-align: center;
+      }
+      .bg-light {
+        background-size: 0rem;
+        padding: 0rem;
+        margin: 0rem;
+        margin-right: 2rem;
+        margin-left:auto;
+        background-color: red;
+      }
+      .contianer {
+        background-color: red;
+      }
+      .col-md-6{
+        background: red;
+        width: 0;
+      }
+      .row{
+        background-color: green;
+        size:0rem
+        with: 2rem;
+        margin-right: 0rem;
+      }
+      
+      .card{
+        width: 25rem;
+        background-size: 0rem;
+        position: relative;
+        float:left;
+      }
+       
+   
+    </style>-->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <head>
+    {% if title %}
+		  <title>  {{ title }} </title>
+    {% else %}
+      <title>Ahodwproperties
+			</title>
+    {% endif %}
+    </head>
+  <body >
+    <!-- Image and text -->
+  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="position: relative;">
+      <a class="navbar-brand" href="https://ahodwoproperties.com/" target="_blank" >
+        <img src="{% static 'logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        Ahodwo Homes and Properties
+
+      </a>
+      <!-- Navbar Right Side -->
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <div class="navbar-nav mr-auto">
+          <a class="nav-item nav-link" href="{% url 'dashboard' %}" style="margin-left: 10px;">Dashboard</a>
+        </div>
+        <!-- Navbar Right Side -->
+        <div class="navbar-nav">
+          {% if user.is_authenticated %}
+          	<a class="nav-item nav-link" href="{% url 'logout' %}" style="margin-left: 870px;">Logout</a>
+
+          {% else %}
+            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+
+          {% endif %}
+        </div>
+      </div>
+
+     
+      </div>
+    </nav>
+    
+      <h4 style="padding-bottom: 0px; text-align: center; margin-bottom:0px; margin-top: 10px;" >
+      {% if heading %}
+        {{ heading }}
+      {% else %}
+        <h3 style="text-align: center;">Ahodwo Homes and Properties
+				</h3>
+      {% endif %}
+      </h4> 
+      <!-- <center><a href="{% url 'dashboard' %}" style="padding-bottom: 0px; margin-bottom:0px"> Return to Main Menu</Menu></a> </center> -->
+      
+      <hr style="height:2px; border:none; color:#333; background-color:#333; margin-top:0px;" />
+      <div style="margin-left: 15px; margin-right: 15px">
+    
+    {% block content %} {% endblock %}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+  <!-- <hr style="height:4px; border:none; color:#333; background-color:#333;" /> -->
+  <!-- Footer -->
+  <!-- <footer id="main-footer" class="py-4 bg-dark text-white text-center " style="position: fixed;
+  bottom: 0; left: 0;
+  width: 100%; height: 20px;">
+    <div style="position: relative; margin-top: center">
+    <div style="color:white; background-color: transparent"></div>Copyright &copy;
+    <span class="year"></span>  
+    <a href="https://digitalhorizon.dev" target="_blank"> Digital Horizon</a>
+   </div>
+      </footer> -->
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+</html>
