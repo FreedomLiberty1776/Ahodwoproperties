@@ -2,21 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from pages.models import Properties, Agent, Transaction, Service, Property_type, Payment_method
 from django.contrib import messages
-from io import BytesIO
 from django.http import HttpResponse
-from django.template.loader import get_template
-from django.views import View
 from xhtml2pdf import pisa
 import PyPDF2
 
-# def render_to_pdf(template_src, context_dict={}):
-# 	template = get_template(template_src)
-# 	html  = template.render(context_dict)
-# 	result = BytesIO()
-# 	pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
-# 	if not pdf.err:
-# 		return HttpResponse(result.getvalue(), content_type='application/pdf')
-# 	return None
+
 
 
 @login_required
@@ -59,36 +49,8 @@ def createinvoice(request):
 			"email": "info@ahodwoproperties.com",
 			"website": "Ahodwoproperties.com",
 			}
-			
-			
-		
-		
 			return render(request, 'pages/pdf_template.html', {'data': data})
 		return redirect('transaction')
-	# return redirect('login')
-
-#Opens up page as PDF
-# class ViewPDF(View):
-	
-# 	def get(self, request, *args, **kwargs):
-# 		print(request.POST)
-
-# 		pdf = render_to_pdf('pages/pdf_template.html', data)
-# 		return HttpResponse(pdf, content_type='application/pdf')
-
-
-#Automaticly downloads to PDF file
-# class DownloadPDF(View):
-# 	def get(self, request, *args, **kwargs):
-		
-# 		pdf = render_to_pdf('pages/pdf_template.html', data)
-
-# 		response = HttpResponse(pdf, content_type='application/pdf')
-# 		filename = "Invoice_%s.pdf" %("12341231")
-# 		content = "attachment; filename='%s'" %(filename)
-# 		response['Content-Disposition'] = content
-# 		return response
-
 
 
 @login_required
@@ -104,7 +66,6 @@ def properties(request):
 		p = Properties(location=location, description=location, owner=owner, owner_contact=contact, price=price, image=image, property_id=property_id)
 		p.save()
 	return render(request, 'pages/properties.html')
-
 
 
 @login_required
@@ -129,6 +90,7 @@ def service(request):
 		p = Service(service=service, description=description)
 		p.save()
 	return render(request, 'pages/service.html')
+
 
 @login_required
 def property_type(request):
@@ -155,13 +117,12 @@ def transaction(request):
 	k = Service.objects.all()
 	t = Property_type.objects.all()
 	f = Payment_method.objects.all()
-
-	
 	return render(request, 'pages/transaction.html', {'agent':p, 'service':k, 'property':t, 'method':f})
+
 
 @login_required
 def dashboard(request):
 	return render(request, 'pages/home.html')
 
-def peace(request):
-	pass
+
+

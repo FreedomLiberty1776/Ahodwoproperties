@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 		'pages',
-		'crispy_forms'
+		'crispy_forms',
+		'wkhtmltopdf',
+		
 
 ]
 
