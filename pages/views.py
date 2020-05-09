@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from pages.models import Properties, Agent, Transaction, Service, Property_type, Payment_method
 from django.contrib import messages
 from django.http import HttpResponse
+from django.db.models import Sum
 from xhtml2pdf import pisa
 import random
 import PyPDF2
@@ -131,7 +132,8 @@ def dashboard(request):
 
 def metrics(request):
 	transaction_metrics = Transaction.objects.all()
-	return render(request,'pages/case_history.html', { 'transaction_metrics':transaction_metrics})
+	total = Transaction.objects.aggregate(Sum('charge'))
+	return render(request,'pages/metrics.html', { 'transaction_metrics':transaction_metrics, 'total':total})
 
 
 
