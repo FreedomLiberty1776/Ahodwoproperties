@@ -15,6 +15,8 @@ class Transaction(models.Model):
 	payment_method = models.CharField(max_length=50)
 	agent = models.CharField(max_length=60)
 	date = models.DateTimeField()
+	invoice_number = models.CharField(max_length=10, null=True)
+	charge = models.IntegerField(null=True)
 	
 
 class Properties(models.Model):

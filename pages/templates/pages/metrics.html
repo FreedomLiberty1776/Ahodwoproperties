@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<title>Document</title>
+</head>
+<style>
+      
+    
+	.table, thead, th, td {
+		text-transform: uppercase;
+		padding: 0.8rem;
+		border: 1px solid black;
+		table-layout: fixed ;
+		width: 100% ;
+		border-collapse: collapse ;
+	}
+
+	.table {
+		border: 2px solid black;
+		width: 100%;
+		margin-top: 2rem;
+	}
+	th, td  {
+		padding: 10px;
+		text-align: center;
+	}
+	.bg-light {
+		background-size: 0rem;
+		padding: 0rem;
+		margin: 0rem;
+		margin-right: 2rem;
+		margin-left:auto;
+		background-color: red;
+	}
+	.contianer {
+		background-color: red;
+	}
+	.col-md-6{
+		background: red;
+		width: 0;
+	}
+	.row{
+		background-color: green;
+		size:0rem
+		with: 2rem;
+		margin-right: 0rem;
+	}
+	
+	.card{
+		width: 25rem;
+		background-size: 0rem;
+		position: relative;
+		float:left;
+	}
+	
+
+</style>
+<body>
+	
+	{% if transaction_metrics %}
+			<table class="table">
+					<thead>
+					<tr>
+							<th scope="col">#</th>
+							<th scope="col">Invoice ID</th>
+							<th scope="col">Client</th>
+							<th scope="col">Client' Address</th>
+							<th scope="col">Sale Price</th>
+							<th scope="col">Percentage Charged</th>
+							<th scope="col">Total Charge</th>
+							<th scope="col">Property Type</th>
+							<th scope="col">Location</th>
+							<th scope="col">Transaction Agent</th>
+							<th scope="col">Date</th>
+					</tr>
+					</thead>
+	{% endif %}  
+	{% if transaction_metrics %}
+			{% for k in transaction_metrics %}
+					<tbody>
+							<tr>
+									<th scope="row">{{ forloop.counter }}</th>
+									<td>{{ k.invoice_number }}</td>
+									<td>{{ k.first }} {{ k.Last }}</td>
+									<td>{{ k.address }}</td>
+									<td>{{ k.sales_price }}</td>
+									<td>{{ k.percent_charged }}</td>
+									<td>{{ k.case_id }}</td>
+									<td>{{ k.property_type }}</td>
+									<td>{{ k.location }}</td>
+									<td>{{ k.agent }}</td>
+									<td>{{ k.date }}</td>
+									
+							</tr>        
+					</tbody>       
+			{% endfor %}
+			</table>
+	{% else %}
+			<p>No request have been made to your school.</p>
+	{% endif %}
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+

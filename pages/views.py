@@ -4,6 +4,7 @@ from pages.models import Properties, Agent, Transaction, Service, Property_type,
 from django.contrib import messages
 from django.http import HttpResponse
 from xhtml2pdf import pisa
+import random
 import PyPDF2
 
 
@@ -15,6 +16,7 @@ def createinvoice(request):
 	# if request.user.is_authenticated:
 		if request.method == 'POST':
 			context = None
+			invoice_number = random.randint(100000,999999)
 			first= request.POST['first']
 			last= request.POST['last']
 			address= request.POST['address']
@@ -28,8 +30,10 @@ def createinvoice(request):
 			charged= (int(request.POST['charge'])/100)* int(request.POST['cost'])
 			date= request.POST['date']
 			agent= request.POST['agent']
-			description= request.POST['description']
-			p = Transaction(first=first, last=last, address=address, location=location, property_type=property_type, service=service, sales_price=cost, percent_charged = charge, payment_method =method, agent=agent, date=date)
+			description = request.POST['description']
+			charge = (int(request.POST['charge'])/100)* int(request.POST['cost'])
+			
+			p = Transaction(charge=charge, invoice_number=invoice_number, first=first, last=last, address=address, location=location, property_type=property_type, service=service, sales_price=cost, percent_charged = charge, payment_method =method, agent=agent, date=date)
 			p.save()
 			data  = {
 			'first': request.POST['first'],
@@ -41,6 +45,7 @@ def createinvoice(request):
 			'charge': request.POST['charge'],
 			'contact': request.POST['contact'],
 			'agent': request.POST['agent'],
+			'invoice_number': invoice_number,
 			'charged': (int(request.POST['charge'])/100)* int(request.POST['cost']),
 			'date': request.POST['date'],
 			'description': 'Service Charge for '+ service + 'of ' + property_type + ' at ' + location,
@@ -123,6 +128,10 @@ def transaction(request):
 @login_required
 def dashboard(request):
 	return render(request, 'pages/home.html')
+
+def metrics(request):
+	transaction_metrics = Transaction.objects.all()
+	return render(request,'pages/case_history.html', { 'transaction_metrics':transaction_metrics})
 
 
 
