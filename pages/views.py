@@ -135,5 +135,6 @@ def metrics(request):
 	total = Transaction.objects.aggregate(Sum('charge'))
 	return render(request,'pages/metrics.html', { 'transaction_metrics':transaction_metrics, 'total':total})
 
-
+def map(request):
+	return render(request, 'pages/map.html')
 

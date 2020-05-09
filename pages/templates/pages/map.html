@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}	
+	<style>
+		#map{
+			height: 600px;
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<H1>Map</H1>
+
+<div id="map"></div>
+<script>
+	function initMap(){
+
+		// map options
+		var options = {
+			zoom:13,
+			center:{lat: 7.446251, lng:-2.581123}
+		}
+
+
+	// new map
+		var map = new google.maps.Map(document.getElementById('map'), options)
+
+
+		// Listen for click on map
+		google.maps.event.addListener(map, 'click', 
+		function(event){
+			//add marker
+			addMarker({coords:event.latLng,
+				 content:`<div class="card-header bg-dark text-white">
+				<h4>
+					<center><i class="fas fa-user-plus"></i> Property Form</h4></center>
+			</div>
+			<div class="forming">
+			<div class="card-body">
+				<div class="content-section">
+						<!-- <div class="container"> -->
+							<div class="content-section">
+								<form action="" method="POST">
+									{% csrf_token %}
+									<div class="form-group">
+									<label for="first_name">Location*</label>
+									<input type="text" name="location" class="form-control"   required>
+								</div>
+				
+									<div class="form-group">
+									<label for="first_name">Address/Area* <small>eg. Adom</small></label>
+									<input type="text" name="address" class="form-control"   required>
+								</div>
+
+								<div class="form-group">
+									<label for="last_name">House/plot Number*</label>
+									<input type="text" name="property_number" class="form-control">
+								</div>
+				
+								<div class="form-group">
+									<label for="first_name">Geolocation*</label>
+									<input type="text" name="geolocation" class="form-control"   value="${event.latLng}" readonly>
+								</div>
+				
+								<div class="form-group">
+									<label for="last_name">Propperty Description</label>
+									<input type="text" name="description" class="form-control"    >
+								</div>
+								<div class="form-group">
+									<label for="last_name">Propperty ID*</label>
+									<input type="text" name="id" class="form-control"    required>
+								</div>
+						 
+								<div class="form-group">
+									<label for="address">Owner*</label>
+									<input type="text" name="owner" class="form-control"   required>
+								</div>
+								<div class="form-group">
+									<label for="address">Owner's Contact*</label>
+									<input type="number" name="contact" class="form-control"   required>
+								</div>
+								<div class="form-group">
+									<label for="address">Price ₵*</label>
+									<input type="number" name="price" class="form-control"  required>
+								</div>						 
+								<div class="form-group">
+									<label for="address">Image*</label>
+									<input type="file" id="img" name="image" accept="image/*">
+								</div>
+								<input type="submit" value="Add Property" class="btn btn-secondary btn-block">
+							</form>
+							</div>
+				</div>
+			</div>
+			</div>
+							 `});
+		});
+
+		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png';
+		/*//Add marker
+		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+		var marker = new google.maps.Marker({
+			position: {lat: 7.446251, lng:-2.581123},
+			map:map,
+			
+		});
+
+
+		//add infowindow
+		var infoWindow = new google.maps.InfoWindow({
+			content:`<h1>Our Office</h1>`
+		});
+
+		marker.addListener('click', function(){
+			infoWindow.open(map, marker);
+		});*/
+
+		//array
+		var markers = [
+		{
+			coords:{lat: 7.446251, lng:-2.581123},
+			iconImage: iconBase,
+			content:`<h1>Our Office</h1>`
+		}
+		]
+		
+
+		//Loop through markers
+		for(var i=0; i<markers.length;i++){
+			addMarker(markers[i]);
+		}
+
+
+		//addMarker function
+		function addMarker(props){
+			var marker = new google.maps.Marker({
+				position:props.coords,
+				map:map,
+				
+			});
+
+			var infoWindow = new google.maps.InfoWindow({
+				content:props.content
+			});
+
+			marker.addListener('click', function(){
+				infoWindow.open(map, marker);
+			});
+
+
+		}
+		
+
+
+		
+		}
+
+	// Add marker
+
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTYqnwWKhDp98RqkSALp9fwCVW-5DrlGg&callback=initMap">
+</script>
+{% endblock %}      

@@ -14,6 +14,7 @@ urlpatterns = [
 	path('property_type', views.property_type, name='property_type'),
 	path('payment_method', views.payment_method, name='payment_method'),
 	path('metrics', views.metrics, name='metrics'),
+	path('map', views.map, name='map'),
 
 
 ]
