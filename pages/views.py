@@ -62,15 +62,20 @@ def createinvoice(request):
 @login_required
 def properties(request):
 	if request.method == 'POST':
-		location = request.POST['location']
+		electorial_area = request.POST['electorial_area']
+		sub_area = request.POST['sub_area']
+		geolocation = request.POST['geolocation']
 		description = request.POST['description']
+		property_type = request.POST['property_type']
 		owner = request.POST['owner']
 		contact = request.POST['contact']
 		price = request.POST['price']
 		image = request.POST['image']
 		property_id = request.POST['id']
-		p = Properties(location=location, description=location, owner=owner, owner_contact=contact, price=price, image=image, property_id=property_id)
+		director = request.POST['director']
+		p = Properties(property_type=property_type, geolocation=geolocation, sub_area=sub_area, electorial_area=electorial_area, description=description, owner=owner, owner_contact=contact, price=price, image=image, property_id=property_id)
 		p.save()
+		return render(request, 'pages/' + director + '.html')
 	return render(request, 'pages/properties.html')
 
 
@@ -136,5 +141,6 @@ def metrics(request):
 	return render(request,'pages/metrics.html', { 'transaction_metrics':transaction_metrics, 'total':total})
 
 def map(request):
+
 	return render(request, 'pages/map.html')
 

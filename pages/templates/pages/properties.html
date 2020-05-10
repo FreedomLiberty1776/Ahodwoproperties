@@ -26,78 +26,60 @@
 							<h4> <center><i class="fas fa-user-plus" style="text-align: center;"></i> Ahodwoproperties Properties</h4></center>
 						</div>
 						<div class="card-body">      
-								<form action="{% url 'properties' %}" method="POST">
-									{% csrf_token %}
-									<div class="form-group">
-									<label for="first_name">Location*</label>
-									<input type="text" name="location" class="form-control"   required>
-								</div>
+							<form action="{% url 'properties' %}" method="POST">
+								{% csrf_token %}
+								<div class="form-group">
+								<label for="first_name">Electorial Area* <small>eg. Adom</small></label>
+								<input type="text" name="electorial_area" class="form-control"   required>
+							</div>
+			
+								<div class="form-group">
+								<label for="first_name">Sub-Area* <small>eg. Adom West</small></label>
+								<input type="text" name="sub_area" class="form-control"   required>
+							</div>
 
-									<div class="form-group">
-									<label for="first_name">Address*</label>
-									<input type="text" name="address" class="form-control"   required>
-								</div>
-	
-								<div class="form-group">
-									<label for="last_name">Propperty Description</label>
-									<input type="text" name="description" class="form-control"    >
-								</div>
-								<div class="form-group">
-									<label for="last_name">Propperty ID*</label>
-									<input type="text" name="id" class="form-control"    required>
-								</div>
-						 
-								<div class="form-group">
-									<label for="address">Owner*</label>
-									<input type="text" name="owner" class="form-control"   required>
-								</div>
-								<div class="form-group">
-									<label for="address">Owner's Contact*</label>
-									<input type="number" name="contact" class="form-control"   required>
-								</div>
-								<!-- <span class="inlineinput">
-									<label for="">Service*</label>
-									<select name="service" class="form-control">
-									<option selected="true" disabled="disabled">Select Service</option>
-									<option value="Rent">Rent</option>
-									<option value="Selling">Selling</option>
-									<option value="Buying">Buying</option>
-									<option value="Leasing">Leasing</option>
-									<option value="Advertising">Advertising</option>
-									<option value="Service Charge">Service Charge</option>
-									</select>
-									</span> -->
-									<!-- <br> -->
-								<!-- <div class="form-group">
-									<label for="description">Description of Service*</label>
-									<textarea name="description" id="" cols="65%" rows="2" style="border-radius: 5px;"></textarea>
-								</div> -->
-								<div class="form-group">
-									<label for="address">Price ₵*</label>
-									<input type="number" name="price" class="form-control"  required>
-								</div>
-						 
-								<div class="form-group">
-									<label for="address">Image*</label>
-									<input type="file" id="img" name="image" accept="image/*">
-								</div>
-								<!-- <div class="form-group">
-									<label for="address">Payment Method*</label>
-									<input type="text" name="method" class="form-control"  required>
-								</div>
-								<div class="form-group">
-									<label for="address">Agent*</label>
-									<input type="text" name="agent" class="form-control"  required>
-								</div>
-						 
-								<div class="form-group">
-									<label for="date">Date</label>
-									<input type="date" name="date" class="form-control"  placeholder="Date of Birth"  required>
-								</div> -->
-							
-								
-								<input type="submit" value="Add Property" class="btn btn-secondary btn-block">
-							</form>
+							<div class="form-group">
+								<label for="last_name">House/Plot Number*</label>
+								<input type="text" name="id" class="form-control">
+							</div>
+			
+							<div class="form-group">
+								<label for="first_name">Geolocation*</label>
+								<input type="text" name="geolocation" class="form-control" value="None">
+							</div>
+			
+							<div class="form-group">
+								<label for="last_name">Propperty Description <small>eg. Boys Quarters</small></label>
+								<input type="text" name="description" class="form-control"    >
+							</div>
+							<div class="form-group">
+								<label for="last_name">Propperty Type <small>eg. Apartment</small></label>
+								<input type="text" name="property_type" class="form-control"    >
+							</div>
+							<!-- <div class="form-group">
+								<label for="last_name">Propperty ID*</label>
+								<input type="text" name="id" class="form-control"    required>
+							</div> -->
+					 
+							<div class="form-group">
+								<label for="address">Owner*</label>
+								<input type="text" name="owner" class="form-control"   required>
+							</div>
+							<div class="form-group">
+								<label for="address">Owner's Contact*</label>
+								<input type="number" name="contact" class="form-control"   required>
+							</div>
+							<div class="form-group">
+								<label for="address">Price ₵*</label>
+								<input type="number" name="price" class="form-control"  required>
+							</div>						 
+							<div class="form-group">
+								<label for="address">Image*</label>
+								<input type="file" id="img" name="image" accept="image/*">
+							</div>
+							<input type="text" value="properties" style='display:none' name="director">
+							<input type="submit" value="Add Property" class="btn btn-secondary btn-block">
+						</form>
 					 
 						</div>
 					</div>

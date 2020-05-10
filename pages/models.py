@@ -17,20 +17,24 @@ class Transaction(models.Model):
 	date = models.DateTimeField()
 	invoice_number = models.CharField(max_length=10, null=True)
 	charge = models.IntegerField(null=True)
-	
+	def __str__(self):
+		return self.invoice_number
 
 class Properties(models.Model):
 	
-	location = models.CharField(max_length=100)
+	electorial_area = models.CharField(max_length=100)
+	sub_area = models.CharField(max_length=100,null=True)
 	description = models.CharField(max_length=200)
-	property_id = models.IntegerField(null=True)
+	property_id = models.CharField(max_length=50, null=True)
 	owner = models.CharField(max_length=50)
+	geolocation= models.CharField(max_length=50, null=True)
 	owner_contact = models.IntegerField()
 	property_type = models.CharField(max_length=50)
 	price = models.DecimalField(decimal_places=2, max_digits=10)
 	date = models.DateTimeField(default=datetime.now)
 	image = models.ImageField(upload_to='properties/images', null=True)
-
+	def __str__(self):
+		return self.property_id
 
 class Agent(models.Model):
 	first = models.CharField(max_length=50)
@@ -39,22 +43,27 @@ class Agent(models.Model):
 	contact = models.BigIntegerField()
 	position = models.CharField(max_length=50)
 	agent_id = models.IntegerField(null=True)
-
+	def __str__(self):
+		return self.first + ' ' +self.last
 
 
 class Service(models.Model):
 	service = models.CharField(max_length=50)
 	description = models.CharField(max_length=50)
-
+	def __str__(self):
+		return self.service
 
 class Property_type(models.Model):
 	property_type = models.CharField(max_length=50)
 	description = models.CharField(max_length=50)
+	def __str__(self):
+		return self.property_type
 
 
 class Payment_method(models.Model):
 	payment_method = models.CharField(max_length=50)
 	description = models.CharField(max_length=50, null=True)
-	
+	def __str__(self):
+		return self.payment_method
 	 
 	

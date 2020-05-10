@@ -41,21 +41,21 @@
 				<div class="content-section">
 						<!-- <div class="container"> -->
 							<div class="content-section">
-								<form action="" method="POST">
+								<form action="{% url 'properties' %}" method="POST">
 									{% csrf_token %}
 									<div class="form-group">
-									<label for="first_name">Location*</label>
-									<input type="text" name="location" class="form-control"   required>
-								</div>
-				
-									<div class="form-group">
-									<label for="first_name">Address/Area* <small>eg. Adom</small></label>
-									<input type="text" name="address" class="form-control"   required>
-								</div>
+										<label for="first_name">Electorial Area* <small>eg. Adom</small></label>
+										<input type="text" name="electorial_area" class="form-control"   required>
+									</div>
+					
+										<div class="form-group">
+										<label for="first_name">Sub-Area* <small>eg. Adom West</small></label>
+										<input type="text" name="sub_area" class="form-control"   required>
+									</div>
 
 								<div class="form-group">
 									<label for="last_name">House/plot Number*</label>
-									<input type="text" name="property_number" class="form-control">
+									<input type="text" name="id" class="form-control">
 								</div>
 				
 								<div class="form-group">
@@ -64,12 +64,12 @@
 								</div>
 				
 								<div class="form-group">
-									<label for="last_name">Propperty Description</label>
+									<label for="last_name">Propperty Description <small>eg. Boys Quarters</small></label>
 									<input type="text" name="description" class="form-control"    >
 								</div>
 								<div class="form-group">
-									<label for="last_name">Propperty ID*</label>
-									<input type="text" name="id" class="form-control"    required>
+									<label for="last_name">Propperty Type <small>eg. Apartment</small></label>
+									<input type="text" name="property_type" class="form-control"    >
 								</div>
 						 
 								<div class="form-group">
@@ -88,6 +88,7 @@
 									<label for="address">Image*</label>
 									<input type="file" id="img" name="image" accept="image/*">
 								</div>
+								<input type="text" value="map" style='display:none' name="director">
 								<input type="submit" value="Add Property" class="btn btn-secondary btn-block">
 							</form>
 							</div>
