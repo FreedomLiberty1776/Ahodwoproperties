@@ -13,7 +13,7 @@ import PyPDF2
 
 @login_required
 def createinvoice(request):
-			
+		# context = {'heading': 'Invoice Form', 'title':'Ahodwoproperties | Invoice'}	
 	# if request.user.is_authenticated:
 		if request.method == 'POST':
 			context = None
@@ -55,12 +55,14 @@ def createinvoice(request):
 			"email": "info@ahodwoproperties.com",
 			"website": "Ahodwoproperties.com",
 			}
-			return render(request, 'pages/pdf_template.html', {'data': data})
+			context = { 'data': data, 'title':'Ahodwoproperties | Invoice'}
+			return render(request, 'pages/pdf_template.html', context)
 		return redirect('transaction')
 
 
 @login_required
 def properties(request):
+	context = {'heading': 'Property Form', 'title':'Ahodwoproperties | Properties'}
 	if request.method == 'POST':
 		electorial_area = request.POST['electorial_area']
 		sub_area = request.POST['sub_area']
@@ -75,12 +77,13 @@ def properties(request):
 		director = request.POST['director']
 		p = Properties(property_type=property_type, geolocation=geolocation, sub_area=sub_area, electorial_area=electorial_area, description=description, owner=owner, owner_contact=contact, price=price, image=image, property_id=property_id)
 		p.save()
-		return render(request, 'pages/' + director + '.html')
-	return render(request, 'pages/properties.html')
+		return render(request, 'pages/' + director + '.html', context)
+	return render(request, 'pages/properties.html', context)
 
 
 @login_required
 def agent(request):
+	context = {'heading': 'Agent Form'}
 	if request.method == 'POST':
 		first = request.POST['first']
 		last = request.POST['last']
@@ -90,36 +93,40 @@ def agent(request):
 		agent_id = request.POST['id']
 		p = Agent(first=first, last=last, address=address, contact=contact, position=position, agent_id =agent_id)
 		p.save()
-	return render(request, 'pages/agent.html')
+	return render(request, 'pages/agent.html', context)
 
 
 @login_required
 def service(request):
+	context = {'heading': 'Service Form', 'title':'Ahodwoproperties | Service'}
 	if request.method == 'POST':
 		service = request.POST['service']
 		description = request.POST['description']
 		p = Service(service=service, description=description)
 		p.save()
-	return render(request, 'pages/service.html')
+	return render(request, 'pages/service.html', context)
 
 
 @login_required
 def property_type(request):
+	context = {'heading': 'Property Type Form', 'title':'Ahodwoproperties | Property Type'}
 	if request.method == 'POST':
 		property_type = request.POST['property_type']
 		description = request.POST['description']
 		p = Property_type(property_type=property_type, description=description)
 		p.save()
-	return render(request, 'pages/property_type.html')
+	return render(request, 'pages/property_type.html', context)
 
 @login_required
 def payment_method(request):
+	context = {'heading': 'Payment Method Form', 'title':'Ahodwoproperties | Payment Method'}
 	if request.method == 'POST':
 		payment_method = request.POST['payment_method']
 		description = request.POST['description']
 		p = Payment_method(payment_method=payment_method, description=description)
 		p.save()
-	return render(request, 'pages/payment_method.html')
+		
+	return render(request, 'pages/payment_method.html', context)
 
 
 @login_required
@@ -128,19 +135,29 @@ def transaction(request):
 	k = Service.objects.all()
 	t = Property_type.objects.all()
 	f = Payment_method.objects.all()
-	return render(request, 'pages/transaction.html', {'agent':p, 'service':k, 'property':t, 'method':f})
+	context = {'heading': 'Invoice Form', 'agent':p, 'service':k, 'property':t, 'method':f, 'title':'Ahodwoproperties | Invoice'}
+	return render(request, 'pages/transaction.html', context)
 
 
 @login_required
 def dashboard(request):
 	return render(request, 'pages/home.html')
 
-def metrics(request):
+@login_required
+def transaction_metrics(request):
 	transaction_metrics = Transaction.objects.all()
 	total = Transaction.objects.aggregate(Sum('charge'))
-	return render(request,'pages/metrics.html', { 'transaction_metrics':transaction_metrics, 'total':total})
+	context = { 'transaction_metrics':transaction_metrics, 'total':total, 'heading':'Transaction Metrics', 'title':'Ahodwoproperties | Transaction Metrics'}
+	return render(request,'pages/transaction_metrics.html', context)
 
+@login_required
+def property_metrics(request):
+	property_metrics = Properties.objects.all()
+	context = {'heading': 'property Metrics', 'property_metrics':property_metrics, 'title':'Ahodwoproperties | Property Metrics'}
+	return render(request,'pages/property_metrics.html', context)
+
+@login_required
 def map(request):
-
-	return render(request, 'pages/map.html')
+	context = {'heading': 'Map', 'title':'Ahodwoproperties | Map'}
+	return render(request, 'pages/map.html', context)
 

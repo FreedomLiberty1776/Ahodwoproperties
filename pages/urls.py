@@ -13,7 +13,8 @@ urlpatterns = [
 	path('service', views.service, name='service'),
 	path('property_type', views.property_type, name='property_type'),
 	path('payment_method', views.payment_method, name='payment_method'),
-	path('metrics', views.metrics, name='metrics'),
+	path('transaction_metrics', views.transaction_metrics, name='transaction_metrics'),
+	path('property_metrics', views.property_metrics, name='property_metrics'),
 	path('map', views.map, name='map'),
 
 
