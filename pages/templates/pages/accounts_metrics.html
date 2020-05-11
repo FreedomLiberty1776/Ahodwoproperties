@@ -56,38 +56,38 @@
 	
 
 </style>
-
-{% if property_metrics %}
+Last Balance:<strong> ₵{{ last_balance }}</strong>
+{% if accounts_metrics %}
 <table class="table">
 		<thead>
 		<tr>
 				<th scope="col">#</th>
-				<th scope="col">House/Plot Number</th>
-				<th scope="col">Electorial Area</th>
-				<th scope="col">Sub Area</th>
-				<th scope="col">Owner</th>
-				<th scope="col">Owner's Contact</th>
-				<th scope="col">Property Description</th>
-				<th scope="col">Property Type</th>
-				<!-- <th scope="col">Geolocation</th> -->
+				<th scope="col">Transaction Date</th>
+				<th scope="col">Description</th>
+				<th scope="col">Trans. Ref. No</th>
+				<th scope="col">Post Ref.</th>
+				<th scope="col">Debit</th>
+				<th scope="col">Credit</th>
+				<th scope="col">Balance</th>
+				<th scope="col">Agent</th>
 				<!-- <th scope="col">Transaction Agent</th> -->
-				<th scope="col">Date Added</th>
+				<!-- <th scope="col">Date Added</th> -->
 		</tr>
 		</thead>
 {% endif %}  
-{% if property_metrics %}
-{% for k in property_metrics %}
+{% if accounts_metrics %}
+{% for k in accounts_metrics %}
 		<tbody>
 				<tr>
 						<th scope="row">{{ forloop.counter }}</th>
-						<td>{{ k.property_id }}</td>
-						<td>{{ k.electorial_area }}</td>
-						<td>{{ k.sub_area }}</td>
-						<td>{{ k.owner }}</td>
-						<td>{{ k.owner_contact }}</td>
+						<td>{{ k.transaction_date }}</td>
 						<td>{{ k.description }}</td>
-						<td>{{ k.property_type }}</td>
-						<!-- <td>{{ k.geolocation }}</td> -->
+						<td>{{ k.transaction_ref_no }}</td>
+						<td>{{ k.post_ref }}</td>
+						<td>{{ k.debit }}</td>
+						<td>{{ k.credit }}</td>
+						<td>{{ k.balance }}</td>
+						<td>{{ k.agent }}</td>
 						<!-- <td>{{ k.location }}</td> -->
 						<!-- <td>{{ k.agent }}</td> -->
 						<td>{{ k.date }}</td>
@@ -103,4 +103,3 @@
 
   <br>
 {% endblock %}
-

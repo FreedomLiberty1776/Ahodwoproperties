@@ -65,5 +65,20 @@ class Payment_method(models.Model):
 	description = models.CharField(max_length=50, null=True)
 	def __str__(self):
 		return self.payment_method
+
+
+class Accounts(models.Model):
+	date_logged = models.DateTimeField(default=datetime.now)
+	transaction_date = models.DateField()
+	description = models.CharField(max_length=500)
+	agent = models.CharField(max_length=50)
+	post_ref = models.IntegerField()
+	debit= models.DecimalField(max_digits=10,decimal_places=2, null=True)
+	credit= models.DecimalField(max_digits=10,decimal_places=2, null=True)
+	balance = models.DecimalField(max_digits=10, decimal_places=2)
+	transaction_ref_no = models.IntegerField()
+	def __str__(self):
+		return self.description
+
 	 
 	

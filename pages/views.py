@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from pages.models import Properties, Agent, Transaction, Service, Property_type, Payment_method
+from pages.models import Properties, Agent, Accounts, Transaction, Service, Property_type, Payment_method
 from django.contrib import messages
 from django.http import HttpResponse
-from django.db.models import Sum
+from django.db.models import Sum, Max
 from xhtml2pdf import pisa
 import random
 import PyPDF2
@@ -33,9 +33,25 @@ def createinvoice(request):
 			agent= request.POST['agent']
 			description = request.POST['description']
 			charge = (int(request.POST['charge'])/100)* int(request.POST['cost'])
-			
+			debit = 0
+			credit = float(charge)
+			transaction_date = date
+			j_description = service +' of '+ property_type+ ': AHP'+ str(invoice_number)
+			post_ref = 500
+			balance = 0
+			if Accounts.objects.count() > 0:
+				max_trans_ref_no = Accounts.objects.aggregate(Max('transaction_ref_no'))
+				transaction_ref_no = max_trans_ref_no['transaction_ref_no__max'] +1
+				total_credit = float(Accounts.objects.aggregate(Sum('credit'))['credit__sum']) + float(credit)
+				total_debit = float(Accounts.objects.aggregate(Sum('debit'))['debit__sum'])
+				balance = total_credit- total_debit
+			else:
+				balance = credit - debit
+				transaction_ref_no = 10000001
+			j= Accounts(transaction_ref_no=transaction_ref_no,transaction_date=transaction_date,description=j_description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
 			p = Transaction(charge=charge, invoice_number=invoice_number, first=first, last=last, address=address, location=location, property_type=property_type, service=service, sales_price=cost, percent_charged = charge, payment_method =method, agent=agent, date=date)
 			p.save()
+			j.save()
 			data  = {
 			'first': request.POST['first'],
 			'last': request.POST['last'],
@@ -154,10 +170,57 @@ def transaction_metrics(request):
 def property_metrics(request):
 	property_metrics = Properties.objects.all()
 	context = {'heading': 'property Metrics', 'property_metrics':property_metrics, 'title':'Ahodwoproperties | Property Metrics'}
-	return render(request,'pages/property_metrics.html', context)
+	return render(request, 'pages/property_metrics.html', context)
+	
+
+@login_required
+def accounts_metrics(request):
+	accounts_metrics = Accounts.objects.all()
+	total_debit = float(Accounts.objects.aggregate(Sum('debit'))['debit__sum'])
+	total_credit = float(Accounts.objects.aggregate(Sum('credit'))['credit__sum'])
+	last_balance = float(total_credit- total_debit)
+	context = {'heading': 'Accounts Metrics', 'accounts_metrics':accounts_metrics, 'last_balance':last_balance, 'title':'Ahodwoproperties | Accounts Metrics'}
+	return render(request,'pages/accounts_metrics.html', context)
 
 @login_required
 def map(request):
 	context = {'heading': 'Map', 'title':'Ahodwoproperties | Map'}
 	return render(request, 'pages/map.html', context)
+
+@login_required
+def accounts(request):
+	context = {'heading': 'Accounts', 'title':'Ahodwoproperties | Accounts'}
+	if request.method == 'POST':
+		debit = 0
+		credit = 0
+		transaction_date = request.POST['transaction_date']
+		description = request.POST['description']
+		post_ref = request.POST['post_ref']
+		transaction_type = request.POST['transaction_type']
+		if transaction_type == 'debit':
+			debit = request.POST['amount']
+		if transaction_type == 'credit':
+			credit = request.POST['amount']
+		agent = request.POST['agent']
+		balance = 0
+		if Accounts.objects.count() > 0:
+			max_trans_ref_no = Accounts.objects.aggregate(Max('transaction_ref_no'))
+			transaction_ref_no = max_trans_ref_no['transaction_ref_no__max'] +1
+			if transaction_type == 'credit':
+				total_credit = float(Accounts.objects.aggregate(Sum('credit'))['credit__sum']) + float(credit)
+			else:
+				total_credit = float(Accounts.objects.aggregate(Sum('credit'))['credit__sum'])
+			if transaction_type == 'debit':
+				total_debit = float(Accounts.objects.aggregate(Sum('debit'))['debit__sum']) + float(debit)
+			else:
+				total_debit = float(Accounts.objects.aggregate(Sum('debit'))['debit__sum'])
+			balance = total_credit- total_debit
+		else:
+			balance = float(credit) - float(debit)
+			transaction_ref_no = 10000001
+		p = Accounts(transaction_ref_no=transaction_ref_no, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
+		p.save()
+		return render(request, 'pages/accounts.html', context)
+	return render(request, 'pages/accounts.html', context)
+
 

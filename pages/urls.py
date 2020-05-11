@@ -13,7 +13,9 @@ urlpatterns = [
 	path('payment_method', views.payment_method, name='payment_method'),
 	path('transaction_metrics', views.transaction_metrics, name='transaction_metrics'),
 	path('property_metrics', views.property_metrics, name='property_metrics'),
+	path('accounts_metrics', views.accounts_metrics, name='accounts_metrics'),
 	path('map', views.map, name='map'),
+	path('accounts', views.accounts, name='accounts'),
 
 
 ]
