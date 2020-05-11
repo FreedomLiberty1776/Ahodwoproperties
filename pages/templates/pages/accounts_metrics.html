@@ -56,7 +56,9 @@
 	
 
 </style>
-Last Balance:<strong> ₵{{ last_balance }}</strong>
+{% if last_balance %}
+	Last Balance:<strong> ₵{{ last_balance }}</strong>
+{% endif %}  
 {% if accounts_metrics %}
 <table class="table">
 		<thead>
@@ -97,7 +99,7 @@ Last Balance:<strong> ₵{{ last_balance }}</strong>
 {% endfor %}
 </table>
 {% else %}
-<p>No property has been added to the database.</p>
+<p>No transaction has been added to the database.</p>
 {% endif %}
 
 

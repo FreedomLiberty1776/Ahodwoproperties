@@ -163,7 +163,7 @@ def dashboard(request):
 def transaction_metrics(request):
 	transaction_metrics = Transaction.objects.all()
 	total = Transaction.objects.aggregate(Sum('charge'))
-	context = { 'transaction_metrics':transaction_metrics, 'total':total, 'heading':'Transaction Metrics', 'title':'Ahodwoproperties | Transaction Metrics'}
+	context = {'transaction_metrics':transaction_metrics, 'total':total, 'heading':'Transaction Metrics', 'title':'Ahodwoproperties | Transaction Metrics'}
 	return render(request,'pages/transaction_metrics.html', context)
 
 @login_required
@@ -175,10 +175,14 @@ def property_metrics(request):
 
 @login_required
 def accounts_metrics(request):
+	if Accounts.objects.count() > 0:
+		total_debit = float(Accounts.objects.aggregate(Sum('debit'))['debit__sum'])
+		total_credit = float(Accounts.objects.aggregate(Sum('credit'))['credit__sum'])
+		last_balance = float(total_credit - total_debit)
+	else:
+		last_balance = None
 	accounts_metrics = Accounts.objects.all()
-	total_debit = float(Accounts.objects.aggregate(Sum('debit'))['debit__sum'])
-	total_credit = float(Accounts.objects.aggregate(Sum('credit'))['credit__sum'])
-	last_balance = float(total_credit- total_debit)
+	
 	context = {'heading': 'Accounts Metrics', 'accounts_metrics':accounts_metrics, 'last_balance':last_balance, 'title':'Ahodwoproperties | Accounts Metrics'}
 	return render(request,'pages/accounts_metrics.html', context)
 
