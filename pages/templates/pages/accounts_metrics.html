@@ -86,8 +86,18 @@
 						<td>{{ k.description }}</td>
 						<td>{{ k.transaction_ref_no }}</td>
 						<td>{{ k.post_ref }}</td>
-						<td>{{ k.debit }}</td>
-						<td>{{ k.credit }}</td>
+						{% if k.debit != 0 %}
+							<td>{{ k.debit }}</td>
+						{% else %}
+							<td>{{ k.debi }}</td>
+						{% endif %}
+						{% if k.credit != 0 %}
+							<td>{{ k.credit }}</td>
+						{% else %}
+							<td>{{ k.cred }}</td>
+						{% endif %}
+						<!-- <td>{{ k.debit }}</td> -->
+						<!-- <td>{{ k.credit }}</td> -->
 						<td>{{ k.balance }}</td>
 						<td>{{ k.agent }}</td>
 						<!-- <td>{{ k.location }}</td> -->
