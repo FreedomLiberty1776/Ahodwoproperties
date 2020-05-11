@@ -87,7 +87,7 @@
 						<td>{{ k.transaction_ref_no }}</td>
 						<td>{{ k.post_ref }}</td>
 						{% if k.debit != 0 %}
-							<td>{{ k.debit }}</td>
+							<td>-{{ k.debit }}</td>
 						{% else %}
 							<td>{{ k.debi }}</td>
 						{% endif %}

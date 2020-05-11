@@ -11,12 +11,18 @@
 	</style>
 </head>
 <body>
-	<!-- <div class="form-group">
-		<label for="first_name">Electorial Area* <small>eg. Adom</small></label>
-		<input type="text" name="electorial_area" class="form-control"   required>
-	</div> -->
+
+			<input type="text"  id="property_id" placeholder="House/Plot No." style="display: inline; " required width="20px" >
+		<!-- </div> -->
+		
+	<!-- </form> -->
+	<button id="submit" class="btn btn-secondary mb-2" style="display: inline; border-radius:0px;" style="height: 2px;">Search</button>
+
 <div id="map"></div>
 <script>
+	data = '{{data|safe}}'
+	let cane = JSON.parse(data)
+	
 	function initMap(){
 
 		// map options
@@ -29,7 +35,46 @@
 	// new map
 		var map = new google.maps.Map(document.getElementById('map'), options)
 
+		//getting the search value
+	
+		submit = document.getElementById('submit')
+		/*form = document.getElementsByClassName('form-inline')
+		get = document.getElementById('form')*/
+		console.log(submit)
+			document.getElementById('submit').addEventListener("click", function(event){
+			property_id = document.getElementById('property_id').value;
+			cord = cane[property_id]['geolocation']
+			cords = cord.slice(1, cord.length-1).split(',')
+			console.log(property_id)
+			addMarker({coords:{lat:parseFloat(cords[0]), lng:parseFloat(cords[1])},
+				content:`
+				<div class="card-header bg-dark text-white">
+					<h4>
+						<center><i class="fas fa-user-plus"></i> Property Form</h4></center>
+				</div>
+				<div class="forming">
+				<div class="card-body">
+					<div class="content-section">
+					<!-- <div class="container"> -->
+					<div class="content-section"><p>Property Type:</strong> ${cane[property_id]['property_type']}</p>
+				<p><strong>Description:</strong> ${cane[property_id]['description']}</p>
+				<p><strong>House/Plot No:</strong> ${cane[property_id]['property_id']}</p>
+				<p><strong>Sub Area:</strong> ${cane[property_id]['sub_area']}</p>
+				<p><strong>Electorial Area:</strong> ${cane[property_id]['electorial_area']}</p>
+				<p><strong>Geolocation:</strong> ${cane[property_id]['geolocation']}</p>
+				<p><strong>Owner:</strong> ${cane[property_id]['owner']}</p>
+				<p><strong>Owner's Contact:</strong> ${cane[property_id]['onwer_contact']}</p>
+				<p><strong>Price:</strong> ₵${cane[property_id]['price']}</p>
+				<p><strong>Date Added:</strong> ${cane[property_id]['date']}</p>
+					</div>
+				</div>
+			</div>
+			</div>
+							`});
+		});
 
+
+		
 		// Listen for click on map
 		google.maps.event.addListener(map, 'click', 
 		function(event){
@@ -102,9 +147,9 @@
 		});
 
 		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png';
-		/*//Add marker
+		//Add marker
 		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-		var marker = new google.maps.Marker({
+		/*var marker = new google.maps.Marker({
 			position: {lat: 7.446251, lng:-2.581123},
 			map:map,
 			

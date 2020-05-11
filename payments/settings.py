@@ -25,7 +25,7 @@ SECRET_KEY = 'chv@ccs=*gmglc%#+lp4#79e2__8)f#%kl2w0y*0&dk2z&8ew('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['67.205.164.249']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 		'pages',
 		'crispy_forms',
+
 
 		
 
@@ -80,9 +81,9 @@ WSGI_APPLICATION = 'payments.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'transaction',
-        'USER': 'postgres',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ahodwoproperties',
+        'USER': 'dbeadu',
         'PASSWORD': 'Ambition123@',
         'HOST': 'localhost'
     } 
@@ -146,8 +147,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST= 'smtp.gmail.com'
 EMAIL_PORT= 587
-EMAIL_HOST_USER='aduemmanuelk21@gmail.com'
-EMAIL_HOST_PASSWORD='BEIRUT123@'
+EMAIL_HOST_USER='Ahwodwoproperties@gmail.com'
+EMAIL_HOST_PASSWORD='Ahodwopropreties@'
 EMAIL_USE_TLS= True
 
 

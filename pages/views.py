@@ -1,11 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from pages.models import Properties, Agent, Accounts, Transaction, Service, Property_type, Payment_method
+from rest_framework import serializers
 from django.contrib import messages
 from django.http import HttpResponse
 from django.db.models import Sum, Max
 from xhtml2pdf import pisa
 import random
+import json
 import PyPDF2
 
 
@@ -188,7 +190,24 @@ def accounts_metrics(request):
 
 @login_required
 def map(request):
-	context = {'heading': 'Map', 'title':'Ahodwoproperties | Map'}
+	queryset = Properties.objects.all()
+	dictionary = {}
+	for i in queryset:
+		dictionary[i.property_id] = {
+			'property_id':i.property_id,
+			'electorial_area':i.electorial_area,
+			'sub_area':i.sub_area,
+			'description':i.description,
+			'owner':i.owner,
+			'owner_contact':i.owner_contact,
+			'property_type': i.property_type,
+			'geolocation':i.geolocation,
+			'price':str(i.price),
+			'date':str(i.date.date())
+			}
+	data = json.dumps(dictionary)
+	# print(dictionary)
+	context = {'heading': 'Map', 'title':'Ahodwoproperties | Map', 'data':data}
 	return render(request, 'pages/map.html', context)
 
 @login_required
