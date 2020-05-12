@@ -207,7 +207,7 @@ def map(request):
 			}
 	data = json.dumps(dictionary)
 	# print(dictionary)
-	context = {'heading': 'Map', 'title':'Ahodwoproperties | Map', 'data':data}
+	context = {'heading': None, 'title':'Ahodwoproperties | Map', 'data':data}
 	return render(request, 'pages/map.html', context)
 
 @login_required

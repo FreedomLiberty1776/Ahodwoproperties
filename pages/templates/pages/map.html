@@ -5,8 +5,7 @@
 	<style>
 		#map{
 			height: 600px;
-			width: 100%;
-			
+			width: 100%;	
 		}
 	</style>
 </head>
@@ -22,13 +21,66 @@
 <script>
 	data = '{{data|safe}}'
 	let cane = JSON.parse(data)
-	
+
+
+
+zoom_number = 14
+center = {lat: 7.450527599214598, lng: -2.583989745780928}
+let search_property;
+
+
+document.getElementById('submit').addEventListener("click", function(event){
+property_id = document.getElementById('property_id').value;
+if(property_id in cane){
+cord = cane[property_id]['geolocation']
+cords = cord.slice(1, cord.length-1).split(',')
+console.log(property_id)
+search_property = {coords:{lat:parseFloat(cords[0]), lng:parseFloat(cords[1])},
+	content:`
+	<div class="card-header bg-dark text-white">
+		<h4>
+			<center><i class="fas fa-user-plus"></i> Property Form</h4></center>
+	</div>
+	<div class="forming">
+	<div class="card-body">
+		<div class="content-section">
+		<!-- <div class="container"> -->
+		<div class="content-section"><p>Property Type:</strong> ${cane[property_id]['property_type']}</p>
+	<p><strong>Description:</strong> ${cane[property_id]['description']}</p>
+	<p><strong>House/Plot No:</strong> ${cane[property_id]['property_id']}</p>
+	<p><strong>Sub Area:</strong> ${cane[property_id]['sub_area']}</p>
+	<p><strong>Electorial Area:</strong> ${cane[property_id]['electorial_area']}</p>
+	<p><strong>Geolocation:</strong> ${cane[property_id]['geolocation']}</p>
+	<p><strong>Owner:</strong> ${cane[property_id]['owner']}</p>
+	<p><strong>Owner's Contact:</strong> ${cane[property_id]['onwer_contact']}</p>
+	<p><strong>Price:</strong> ₵${cane[property_id]['price']}</p>
+	<p><strong>Date Added:</strong> ${cane[property_id]['date']}</p>
+		</div>
+	</div>
+</div>
+</div>
+				`}			
+zoom_number = 17
+center = {lat:parseFloat(cords[0]), lng:parseFloat(cords[1])}			
+} else {
+	zoom_number = 14
+	center = {lat: 7.450527599214598, lng: -2.583989745780928}
+	search_property= null
+	};
+
+initMap()
+
+});
+
+
+	//map function start here.
 	function initMap(){
 
 		// map options
 		var options = {
-			zoom:13,
-			center:{lat: 7.446251, lng:-2.581123}
+		zoom:zoom_number,
+			center:center,
+			mapTypeId: 'satellite'
 		}
 
 
@@ -36,12 +88,8 @@
 		var map = new google.maps.Map(document.getElementById('map'), options)
 
 		//getting the search value
-	
-		submit = document.getElementById('submit')
-		/*form = document.getElementsByClassName('form-inline')
-		get = document.getElementById('form')*/
-		console.log(submit)
-			document.getElementById('submit').addEventListener("click", function(event){
+		
+			/*document.getElementById('submit').addEventListener("click", function(event){
 			property_id = document.getElementById('property_id').value;
 			cord = cane[property_id]['geolocation']
 			cords = cord.slice(1, cord.length-1).split(',')
@@ -71,9 +119,9 @@
 			</div>
 			</div>
 							`});
-		});
+		});  */
 
-
+		
 		
 		// Listen for click on map
 		google.maps.event.addListener(map, 'click', 
@@ -166,7 +214,7 @@
 		});*/
 
 		//array
-		var markers = [
+		/*var markers = [
 		{
 			coords:{lat: 7.446251, lng:-2.581123},
 			iconImage: iconBase,
@@ -178,14 +226,15 @@
 		//Loop through markers
 		for(var i=0; i<markers.length;i++){
 			addMarker(markers[i]);
-		}
-
+		}*/
+		if(search_property){addMarker(search_property)}
 
 		//addMarker function
 		function addMarker(props){
 			var marker = new google.maps.Marker({
 				position:props.coords,
 				map:map,
+				draggable:props.draggable
 				
 			});
 

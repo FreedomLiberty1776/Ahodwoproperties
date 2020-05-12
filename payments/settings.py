@@ -153,6 +153,10 @@ EMAIL_USE_TLS= True
 
 
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 1500 # set just 10 seconds to test
+SESSION_SAVE_EVERY_REQUEST = True
+
 try:
   from .local_settings import *
 except ImportError:

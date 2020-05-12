@@ -18,7 +18,7 @@ class Transaction(models.Model):
 	invoice_number = models.CharField(max_length=10, null=True)
 	charge = models.IntegerField(null=True)
 	def __str__(self):
-		return self.invoice_number
+		return 'AHP'+ str(self.invoice_number)
 
 class Properties(models.Model):
 	
