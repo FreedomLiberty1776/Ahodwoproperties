@@ -11,14 +11,13 @@ import json
 import PyPDF2
 
 
-
-
 @login_required
 def createinvoice(request):
 		# context = {'heading': 'Invoice Form', 'title':'Ahodwoproperties | Invoice'}	
 	# if request.user.is_authenticated:
+		context = None
 		if request.method == 'POST':
-			context = None
+			
 			invoice_number = random.randint(100000,999999)
 			first= request.POST['first']
 			last= request.POST['last']
@@ -55,12 +54,12 @@ def createinvoice(request):
 			p.save()
 			j.save()
 			data  = {
-			'first': request.POST['first'],
-			'last': request.POST['last'],
+			'first': request.POST['first'].capitalize(),
+			'last': request.POST['last'].capitalize(),
 			'address': request.POST['address'],
-			'service': request.POST['service'],
+			'service': request.POST['service'].capitalize(),
 			'cost': request.POST['cost'],
-			'method': request.POST['method'],
+			'method': request.POST['method'].capitalize(),
 			'charge': request.POST['charge'],
 			'contact': request.POST['contact'],
 			'agent': request.POST['agent'],
@@ -72,30 +71,73 @@ def createinvoice(request):
 			"phone": "055 3246 573 / 050 461 3609",
 			"email": "info@ahodwoproperties.com",
 			"website": "Ahodwoproperties.com",
-			}
-			context = { 'data': data, 'title':'Ahodwoproperties | Invoice'}
+			}	
+			context = {'data': data, 'title': 'Ahodwoproperties | Invoice'}
 			return render(request, 'pages/pdf_template.html', context)
-		return redirect('transaction')
+		return render(request, 'pages/pdf_template.html', context)
 
 
 @login_required
 def properties(request):
 	context = {'heading': 'Property Form', 'title':'Ahodwoproperties | Properties'}
 	if request.method == 'POST':
-		electorial_area = request.POST['electorial_area']
-		sub_area = request.POST['sub_area']
-		geolocation = request.POST['geolocation']
-		description = request.POST['description']
-		property_type = request.POST['property_type']
-		owner = request.POST['owner']
-		contact = request.POST['contact']
-		price = request.POST['price']
-		image = request.POST['image']
 		property_id = request.POST['id']
 		director = request.POST['director']
-		p = Properties(property_type=property_type, geolocation=geolocation, sub_area=sub_area, electorial_area=electorial_area, description=description, owner=owner, owner_contact=contact, price=price, image=image, property_id=property_id)
-		p.save()
-		return render(request, 'pages/' + director + '.html', context)
+		database = Properties.objects.values_list('property_id', flat=True)
+		if property_id in database and director == 'properties':
+			messages.error(request, 'The house/plot no. "'+property_id+'"'+' already exist in the database' )
+			return render(request, 'pages/properties.html', context)
+		elif property_id in database and director == 'map':
+			messages.error(request, 'The house/plot no. "'+property_id+'"'+' already exist in the database' )
+			return redirect('map')
+		else:
+			electorial_area = request.POST['electorial_area'].lower()
+			sub_area = request.POST['sub_area'].lower()
+			geolocation = request.POST['geolocation']
+			description = request.POST['description'].lower()
+			property_type = request.POST['property_type'].lower()
+			owner = request.POST['owner'].lower()
+			contact = request.POST['contact']
+			price = request.POST['price']
+			image = request.POST['image']
+			p = Properties(property_type=property_type, geolocation=geolocation, sub_area=sub_area, electorial_area=electorial_area, description=description, owner=owner, owner_contact=contact, price=price, image=image, property_id=property_id)
+			p.save()
+			trigger = {}
+			trigger['trigger'] = {
+				'electorial_area': electorial_area.capitalize(),
+				'sub_area': sub_area.capitalize(),
+				'geolocation': geolocation,
+				'description': description.capitalize(),
+				'property_type': property_type.capitalize(),
+				'owner': owner.capitalize(),
+				'price': price,
+				'contact': contact,
+				'property_id': property_id,
+			}
+			trigger = json.dumps(trigger)
+			if director == 'map':
+				queryset = Properties.objects.all()
+				dictionary = {}
+				for i in queryset:
+					dictionary[i.property_id] = {
+						'property_id':i.property_id,
+						'electorial_area':i.electorial_area,
+						'sub_area':i.sub_area,
+						'description':i.description,
+						'owner':i.owner,
+						'owner_contact':i.owner_contact,
+						'property_type': i.property_type,
+						'geolocation':i.geolocation,
+						'price':str(i.price),
+						'date':str(i.date.date())
+						}
+				data = json.dumps(dictionary)
+				context = {'heading': None, 'title': 'Ahodwoproperties | Map', 'data': data}
+				context["trigger"]= trigger
+				return render(request, 'pages/map.html', context)
+			elif director == 'properties':
+				context["trigger"]= trigger
+				return render(request, 'pages/properties.html', context)
 	return render(request, 'pages/properties.html', context)
 
 
@@ -116,34 +158,69 @@ def agent(request):
 
 @login_required
 def service(request):
-	context = {'heading': 'Service Form', 'title':'Ahodwoproperties | Service'}
+	context = {'heading': 'Service Form', 'title': 'Ahodwoproperties | Service'}
 	if request.method == 'POST':
-		service = request.POST['service']
-		description = request.POST['description']
+		service = request.POST['service'].lower()
+		description = request.POST['description'].lower()
+		database = Service.objects.values_list('service', flat=True)
+		if service in database:
+			messages.error(request, 'The service "'+service+'"'+' already exist in the database' )
+			return render(request, 'pages/service.html', context) 
 		p = Service(service=service, description=description)
 		p.save()
+		trigger = {}
+		trigger['trigger'] = {
+			'service': service.capitalize(),
+			'description':description.capitalize()
+		}
+		trigger = json.dumps(trigger)
+		context["trigger"]= trigger
 	return render(request, 'pages/service.html', context)
 
 
 @login_required
 def property_type(request):
-	context = {'heading': 'Property Type Form', 'title':'Ahodwoproperties | Property Type'}
+	context = {'heading': 'Property Type Form', 'title': 'Ahodwoproperties | Property Type'}
 	if request.method == 'POST':
-		property_type = request.POST['property_type']
-		description = request.POST['description']
+		property_type = request.POST['property_type'].lower()
+		description = request.POST['description'].lower()
+		database = Property_type.objects.values_list('property_type', flat=True)
+		if property_type in database:
+			messages.error(request, 'The service "' + property_type + '"' + ' already exist in the database')
+			return render(request, 'pages/property_type.html', context)
 		p = Property_type(property_type=property_type, description=description)
 		p.save()
+		trigger = {}
+		trigger['trigger'] = {
+			'property_type': property_type.capitalize(),
+			'description':description.capitalize()
+		}
+		trigger = json.dumps(trigger)
+		context["trigger"]= trigger
+		return render(request, 'pages/property_type.html', context)
 	return render(request, 'pages/property_type.html', context)
+
 
 @login_required
 def payment_method(request):
 	context = {'heading': 'Payment Method Form', 'title':'Ahodwoproperties | Payment Method'}
 	if request.method == 'POST':
-		payment_method = request.POST['payment_method']
-		description = request.POST['description']
+		payment_method = request.POST['payment_method'].lower()
+		description = request.POST['description'].lower()
+		database = Payment_method.objects.values_list('payment_method', flat=True)
+		if payment_method in database:
+			messages.error(request, 'The payment method "' + payment_method.capitalize() + '"' + ' already exist in the database')
+			return render(request, 'pages/payment_method.html', context)
 		p = Payment_method(payment_method=payment_method, description=description)
 		p.save()
-		
+		trigger = {}
+		trigger['trigger'] = {
+			'payment_method': payment_method.capitalize(),
+			'description':description.capitalize()
+		}
+		trigger = json.dumps(trigger)
+		context["trigger"]= trigger
+		return render(request, 'pages/payment_method.html', context)
 	return render(request, 'pages/payment_method.html', context)
 
 
@@ -161,12 +238,14 @@ def transaction(request):
 def dashboard(request):
 	return render(request, 'pages/home.html')
 
+
 @login_required
 def transaction_metrics(request):
 	transaction_metrics = Transaction.objects.all()
 	total = Transaction.objects.aggregate(Sum('charge'))
 	context = {'transaction_metrics':transaction_metrics, 'total':total, 'heading':'Transaction Metrics', 'title':'Ahodwoproperties | Transaction Metrics'}
 	return render(request,'pages/transaction_metrics.html', context)
+
 
 @login_required
 def property_metrics(request):
@@ -187,6 +266,7 @@ def accounts_metrics(request):
 	
 	context = {'heading': 'Accounts Metrics', 'accounts_metrics':accounts_metrics, 'last_balance':last_balance, 'title':'Ahodwoproperties | Accounts Metrics'}
 	return render(request,'pages/accounts_metrics.html', context)
+
 
 @login_required
 def map(request):
@@ -210,6 +290,7 @@ def map(request):
 	context = {'heading': None, 'title':'Ahodwoproperties | Map', 'data':data}
 	return render(request, 'pages/map.html', context)
 
+
 @login_required
 def accounts(request):
 	context = {'heading': 'Accounts', 'title':'Ahodwoproperties | Accounts'}
@@ -218,6 +299,7 @@ def accounts(request):
 		credit = 0
 		transaction_date = request.POST['transaction_date']
 		description = request.POST['description']
+		comment = request.POST['comment']
 		post_ref = request.POST['post_ref']
 		transaction_type = request.POST['transaction_type']
 		if transaction_type == 'debit':
@@ -241,8 +323,12 @@ def accounts(request):
 		else:
 			balance = float(credit) - float(debit)
 			transaction_ref_no = 10000001
-		p = Accounts(transaction_ref_no=transaction_ref_no, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
+		p = Accounts(transaction_ref_no=transaction_ref_no, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
 		p.save()
+		m = ''
+		if transaction_type == 'debit':
+			m = '-'
+		messages.error(request, 'You have succefully added a '+ transaction_type+ ' of ₵'+m+request.POST['amount']+ ' to the account.')
 		return render(request, 'pages/accounts.html', context)
 	return render(request, 'pages/accounts.html', context)
 

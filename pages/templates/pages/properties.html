@@ -1,22 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha256-ECB9bbROLGm8wOoEbHcHRxlHgzGqYpDtNTgDTyDz0wg=" crossorigin="anonymous" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<title>Document</title>
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-		<a class="navbar-brand" href="#" >
-			<img src="{% static 'logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-			Ahodwoproperties Payment System
-		</a>
-	</nav> -->
-	{% block content %}
+
+{% block content %}
+{% if messages %}
+	<div class="alert alert-warning alert-dismissable">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+{% for message in messages %}
+	<p>{{ message }}</p>
+{% endfor %}
+	</div>
+{% endif %}
 	<section id="register" class="bg-light py-5">
 		<div class="container">
 			<div class="row">
@@ -56,11 +49,7 @@
 								<label for="last_name">Propperty Type <small>eg. Apartment</small></label>
 								<input type="text" name="property_type" class="form-control"    >
 							</div>
-							<!-- <div class="form-group">
-								<label for="last_name">Propperty ID*</label>
-								<input type="text" name="id" class="form-control"    required>
-							</div> -->
-					 
+
 							<div class="form-group">
 								<label for="address">Owner*</label>
 								<input type="text" name="owner" class="form-control"   required>
@@ -80,7 +69,6 @@
 							<input type="text" value="properties" style='display:none' name="director">
 							<input type="submit" value="Add Property" class="btn btn-secondary btn-block">
 						</form>
-					 
 						</div>
 					</div>
 				</div>
@@ -88,9 +76,53 @@
 		</div>
 	</section>
 	</div>
+
+	<!-- Hidden Modal reponse box -->
+	<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Success!</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+			</div>
+			<div id="success">	
+			</div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center" style="display: none;">
+  <a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
+</div>
+
+<!-- javascript for success message modal response -->
+<script>
+	link =  document.getElementById('link')
+	success =  document.getElementById('success')
+	trigger = '{{trigger|safe}}'
+	let return_value = JSON.parse(trigger)
+	
+		window.onload = (event) => {
+		response = ''
+		if(trigger){ 
+		response+= `<p>You have successfully added a property with the following information</p>
+			<p><strong>House/Plot No.: </strong>${return_value['trigger']['property_id']}</p>
+			<p><strong>Geolocation: </strong>${return_value['trigger']['geolocation']}</p>
+			<p><strong>Electorial Area: </strong>${return_value['trigger']['electorial_area']}</p>
+			<p><strong>Sub Area: </strong>${return_value['trigger']['sub_area']}</p>
+			<p><strong>Propery Type: </strong>${return_value['trigger']['property_type']}</p>
+			<p><strong>Description: </strong>${return_value['trigger']['description']}</p>
+			<p><strong>Owner: </strong>${return_value['trigger']['owner']}</p>
+			<p><strong>Onwer's: </strong>${return_value['trigger']['contact']}</p>
+			<p><strong>Price: </strong>${return_value['trigger']['price']}</p>
+			`;
+			success.innerHTML = response
+			link.click()
+		}
+		
+	};
+</script>
 	{% endblock %}
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
-</html> -->

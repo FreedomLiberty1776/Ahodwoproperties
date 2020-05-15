@@ -71,14 +71,32 @@ class Accounts(models.Model):
 	date_logged = models.DateTimeField(default=datetime.now)
 	transaction_date = models.DateField()
 	description = models.CharField(max_length=500)
+	comment = models.CharField(max_length=1000, null=True)
 	agent = models.CharField(max_length=50)
 	post_ref = models.IntegerField()
+	transaction_type = models.CharField(max_length=20, null=True)
+	business = models.IntegerField(null=True)
 	debit= models.DecimalField(max_digits=10,decimal_places=2, null=True)
 	credit= models.DecimalField(max_digits=10,decimal_places=2, null=True)
 	balance = models.DecimalField(max_digits=10, decimal_places=2)
-	transaction_ref_no = models.IntegerField()
+	transaction_ref_no = models.IntegerField(unique=True)
 	def __str__(self):
 		return self.description
+
+
+class Post_Ref(models.Model):
+	service_item = models.CharField(max_length=100)
+	description = models.CharField(max_length=500)
+	post_ref = models.IntegerField(unique=True)
+	def __str__(self):
+		return self.service_item
+
+class Business(models.Model):
+	business = models.CharField(max_length=100)
+	description = models.CharField(max_length=500)
+	business_id = models.IntegerField(unique=True)
+	def __str__(self):
+		return self.business
 
 	 
 	

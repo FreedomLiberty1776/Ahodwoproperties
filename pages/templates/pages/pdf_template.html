@@ -173,7 +173,12 @@
 																			Opposite Police Charge Office<br>
 																			Berekum, Brong Ahafo. <br>
 																			{{data.phone}} <br> <br>
-																			<strong>Payment for:  </strong> {{ data.description }}
+																			<strong>Payment for:  </strong>   
+																			{% if data.service != 'Registration ' %} 
+																				{{ data.description }}
+																			{% else %}
+																				{{ data.service }}
+																			{% endif %}
 			
 			
 			
@@ -231,16 +236,16 @@
 												₵{{data.cost}}
 											</td>
 									</tr>
-									
-									<tr class="item">
-											<td>
-													Service Charge ({{ data.charge }}%)
-											</td>
-											
-											<td>
-												₵ {{ data.charged }}
-											</td>
-									</tr>
+									{% if data.service != 'Registration ' %}
+											<tr class="item">
+													<td>
+															Service Charge ({{ data.charge }}%)
+													</td>
+													<td>
+														₵ {{ data.charged }}
+													</td>
+											</tr>
+          				{% endif %}
 									
 									<!-- <tr class="item last">
 											<td>
@@ -263,7 +268,10 @@
 							<br>
 							<p style="margin-top: 0;">* Invoice Prepared by: {{ data.agent }}</p>
 							<p style="text-align: center;"> <strong style="text-align: center;">Thank You For Doing Business With us!</strong></p>
+							<p style="text-align: center;"> <strong style="text-align: center;">Serving Beyong Expectation!</strong></p>
+							
 					</div>
+			
 		
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

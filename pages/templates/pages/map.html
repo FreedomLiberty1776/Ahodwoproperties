@@ -2,6 +2,14 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}	
+{% if messages %}
+	<div class="alert alert-warning alert-dismissable">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+{% for message in messages %}
+	<p>{{ message }}</p>
+{% endfor %}
+	</div>
+{% endif %}
 	<style>
 		#map{
 			height: 600px;
@@ -18,6 +26,28 @@
 	<button id="submit" class="btn btn-secondary mb-2" style="display: inline; border-radius:0px;" style="height: 2px;">Search</button>
 
 <div id="map"></div>
+
+<!-- Hidden Modal reponse box -->
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<div class="modal-header text-center">
+			<h4 class="modal-title w-100 font-weight-bold">Success!</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div id="success">	
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="text-center" style="display: none;">
+<a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
+</div>
+
 <script>
 	data = '{{data|safe}}'
 	let cane = JSON.parse(data)
@@ -148,7 +178,6 @@ initMap()
 										<label for="first_name">Sub-Area* <small>eg. Adom West</small></label>
 										<input type="text" name="sub_area" class="form-control"   required>
 									</div>
-
 								<div class="form-group">
 									<label for="last_name">House/plot Number*</label>
 									<input type="text" name="id" class="form-control">
@@ -202,13 +231,10 @@ initMap()
 			map:map,
 			
 		});
-
-
 		//add infowindow
 		var infoWindow = new google.maps.InfoWindow({
 			content:`<h1>Our Office</h1>`
 		});
-
 		marker.addListener('click', function(){
 			infoWindow.open(map, marker);
 		});*/
@@ -222,7 +248,6 @@ initMap()
 		}
 		]
 		
-
 		//Loop through markers
 		for(var i=0; i<markers.length;i++){
 			addMarker(markers[i]);
@@ -260,4 +285,33 @@ initMap()
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTYqnwWKhDp98RqkSALp9fwCVW-5DrlGg&callback=initMap">
 </script>
-{% endblock %}      
+
+<!-- javascript for success message modal response -->
+<script>
+	link =  document.getElementById('link')
+	success =  document.getElementById('success')
+	trigger = '{{trigger|safe}}'
+	let return_value = JSON.parse(trigger)
+	
+		window.onload = (event) => {
+		response = ''
+		if(trigger){ 
+		response+= `<p>You have successfully added a property with the following information</p>
+			<p><strong>House/Plot No.: </strong>${return_value['trigger']['property_id']}</p>
+			<p><strong>Geolocation: </strong>${return_value['trigger']['geolocation']}</p>
+			<p><strong>Electorial Area: </strong>${return_value['trigger']['electorial_area']}</p>
+			<p><strong>Sub Area: </strong>${return_value['trigger']['sub_area']}</p>
+			<p><strong>Propery Type: </strong>${return_value['trigger']['property_type']}</p>
+			<p><strong>Description: </strong>${return_value['trigger']['description']}</p>
+			<p><strong>Owner: </strong>${return_value['trigger']['owner']}</p>
+			<p><strong>Onwer's: </strong>${return_value['trigger']['contact']}</p>
+			<p><strong>Price: </strong>${return_value['trigger']['price']}</p>
+			`;
+			success.innerHTML = response
+			link.click()
+		}
+		
+	};
+</script>
+
+{% endblock %}   

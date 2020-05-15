@@ -25,7 +25,7 @@ SECRET_KEY = 'chv@ccs=*gmglc%#+lp4#79e2__8)f#%kl2w0y*0&dk2z&8ew('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['67.205.164.249']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'payments.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ahodwoproperties',
-        'USER': 'dbeadu',
-        'PASSWORD': 'Ambition123@',
+        'NAME': 'transaction',
+        'USER': 'postgres',
+        'PASSWORD': os.environ.get('password'),
         'HOST': 'localhost'
     } 
 }
@@ -142,7 +142,10 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+  messages.ERROR: 'danger'
+}
 # Email config
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST= 'smtp.gmail.com'
@@ -154,7 +157,7 @@ EMAIL_USE_TLS= True
 
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 1500 # set just 10 seconds to test
+SESSION_COOKIE_AGE = 1800 # set just 10 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
 
 try:

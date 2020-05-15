@@ -1,22 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha256-ECB9bbROLGm8wOoEbHcHRxlHgzGqYpDtNTgDTyDz0wg=" crossorigin="anonymous" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<title>Document</title>
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-		<a class="navbar-brand" href="#" >
-			<img src="{% static 'logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-			Ahodwoproperties Payment System
-		</a>
-	</nav> -->
-	{% block content %}
+{% block content %}
+{% if messages %}
+	<div class="alert alert-warning alert-dismissable">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+{% for message in messages %}
+	<p>{{ message }}</p>
+{% endfor %}
+	</div>
+{% endif %}
 	<section id="register" class="bg-light py-5">
 		<div class="container">
 			<div class="row">
@@ -27,23 +19,17 @@
 						</div>
 						<div class="card-body">      
 								<form action="{% url 'payment_method' %}" method="POST">
-									{% csrf_token %}
-									
-
+									{% csrf_token %}						
 									<div class="form-group">
 									<label for="first_name">Payment Method*</label>
 									<input type="text" name="payment_method" class="form-control"   required>
-								</div>
-	
+								</div>	
 								<div class="form-group">
 									<label for="last_name">Payment Method Description</label>
 									<input type="text" name="description" class="form-control"   >
 								</div>
-								
-								
 								<input type="submit" value="Add Payment Method" class="btn btn-secondary btn-block">
-							</form>
-					 
+							</form>					 
 						</div>
 					</div>
 				</div>
@@ -51,9 +37,46 @@
 		</div>
 	</section>
 	</div>
+
+	<!-- Hidden Modal reponse box -->
+	<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Success!</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+			</div>
+			<div id="success">	
+			</div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center" style="display: none;">
+  <a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
+</div>
+
+<!-- javascript for success message modal response -->
+<script>
+	link =  document.getElementById('link')
+	success =  document.getElementById('success')
+	trigger = '{{trigger|safe}}'
+	let return_value = JSON.parse(trigger)
+	
+		window.onload = (event) => {
+		response = ''
+		if(trigger){ 
+		response+= `<p>You have successfully added a payment method with the following information</p>
+			<p><strong>Property Method: </strong>${return_value['trigger']['property_method']}</p>
+			<p><strong>Description: </strong>${return_value['trigger']['description']}</p>`;
+			success.innerHTML = response
+			link.click()
+		}
+		
+	};
+</script>
 	{% endblock %}
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
-</html> -->
+    
