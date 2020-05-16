@@ -14,7 +14,7 @@
 				<div class="col-md-6 mx-auto">
 					<div class="card">
 						<div class="card-header bg-dark text-white border-none" >
-							<h4> <center><i class="fas fa-user-plus" style="text-align: center;"></i> Ahodwoproperties Invoice</h4></center>
+							<h4> <center><i class="fas fa-user-plus" style="text-align: center;"></i> Ahodwoproperties Accounts</h4></center>
 						</div>
 						<div class="card-body">      
 								<form action="{% url 'accounts' %}" method="POST">
@@ -22,12 +22,32 @@
 									
 								<div class="form-group">
 									<label for="description">Description*</label>
-									<textarea name="description" id="" cols="65%" rows="2" style="border-radius: 5px;"></textarea>
-								</div>
+									<textarea name="description" id="" cols="65%" rows="2" style="border-radius: 5px;"></textarea><br><br>
+								<!-- </div>
 								<div class="form-group">
 									<label for="address">Post Ref*</label>
 									<input type="number" name="post_ref" class="form-control"  required>
-								</div>
+								</div> -->
+
+								<span class="inlineinput">
+									<label for="address">Post Ref*</label>
+								<select name="post_ref" class="form-control">
+								<option selected="true" disabled="disabled">Select Post Ref Item</option>
+								{% for i in post_ref %}
+										<option value="{{ i.post_ref }} ">{{ i.service_item }} </option>
+								{% endfor %}
+								</select>
+								</span> <br><br>
+						 
+								<span class="inlineinput">
+									<label for="address">Business*</label>
+								<select name="business" class="form-control">
+								<option selected="true" disabled="disabled">Select Business</option>
+								{% for i in business %}
+										<option value="{{ i.business_id }} ">{{ i.business }} </option>
+								{% endfor %}
+								</select>
+								</span> <br><br>
 						 
 								<p style="padding-bottom: 0;">Select Transaction Type*</p>
             <input type="radio" id="multiple_choice" name="transaction_type" value="debit">

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from pages.models import Properties, Agent, Accounts, Transaction, Service, Property_type, Payment_method
+from pages.models import Properties, Agent, Accounts, Transaction, Service, Property_type, Payment_method, Post_Ref, Business
 from rest_framework import serializers
 from django.contrib import messages
 from django.http import HttpResponse
@@ -13,11 +13,8 @@ import PyPDF2
 
 @login_required
 def createinvoice(request):
-		# context = {'heading': 'Invoice Form', 'title':'Ahodwoproperties | Invoice'}	
-	# if request.user.is_authenticated:
 		context = None
 		if request.method == 'POST':
-			
 			invoice_number = random.randint(100000,999999)
 			first= request.POST['first']
 			last= request.POST['last']
@@ -25,7 +22,9 @@ def createinvoice(request):
 			service= request.POST['service']
 			cost= request.POST['cost']
 			method= request.POST['method']
-			charge= request.POST['charge']
+			charge = request.POST['charge']
+			post_ref = request.POST['post_ref']
+			business = request.POST['business']
 			contact= request.POST['contact']
 			location= request.POST['location']
 			property_type= request.POST['property_type']
@@ -33,12 +32,15 @@ def createinvoice(request):
 			date= request.POST['date']
 			agent= request.POST['agent']
 			description = request.POST['description']
+			transaction_type = 'credit'
+			comment = 'None'
+			
 			charge = (int(request.POST['charge'])/100)* int(request.POST['cost'])
 			debit = 0
 			credit = float(charge)
 			transaction_date = date
 			j_description = service +' of '+ property_type+ ': AHP'+ str(invoice_number)
-			post_ref = 500
+			# post_ref = 500
 			balance = 0
 			if Accounts.objects.count() > 0:
 				max_trans_ref_no = Accounts.objects.aggregate(Max('transaction_ref_no'))
@@ -49,7 +51,7 @@ def createinvoice(request):
 			else:
 				balance = credit - debit
 				transaction_ref_no = 10000001
-			j= Accounts(transaction_ref_no=transaction_ref_no,transaction_date=transaction_date,description=j_description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
+			j= Accounts(transaction_ref_no=transaction_ref_no, transaction_type=transaction_type, business=business, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
 			p = Transaction(charge=charge, invoice_number=invoice_number, first=first, last=last, address=address, location=location, property_type=property_type, service=service, sales_price=cost, percent_charged = charge, payment_method =method, agent=agent, date=date)
 			p.save()
 			j.save()
@@ -64,7 +66,7 @@ def createinvoice(request):
 			'contact': request.POST['contact'],
 			'agent': request.POST['agent'],
 			'invoice_number': invoice_number,
-			'charged': (int(request.POST['charge'])/100)* int(request.POST['cost']),
+			'charged': round((int(request.POST['charge'])/100)* int(request.POST['cost']),2), 
 			'date': request.POST['date'],
 			'description': 'Service Charge for '+ service + 'of ' + property_type + ' at ' + location,
 			"company": "Ahodwoproperties",
@@ -230,7 +232,9 @@ def transaction(request):
 	k = Service.objects.all()
 	t = Property_type.objects.all()
 	f = Payment_method.objects.all()
-	context = {'heading': 'Invoice Form', 'agent':p, 'service':k, 'property':t, 'method':f, 'title':'Ahodwoproperties | Invoice'}
+	business = Business.objects.all()
+	post_ref = Post_Ref.objects.all()
+	context = {'heading': 'Invoice Form', 'agent':p, 'service':k, 'property':t, 'method':f, 'title':'Ahodwoproperties | Invoice', 'business':business,'post_ref':post_ref}
 	return render(request, 'pages/transaction.html', context)
 
 
@@ -293,7 +297,10 @@ def map(request):
 
 @login_required
 def accounts(request):
-	context = {'heading': 'Accounts', 'title':'Ahodwoproperties | Accounts'}
+	business = Business.objects.all()
+	post_ref = Post_Ref.objects.all()
+	print([i for i in post_ref])
+	context = {'heading': 'Accounts', 'title': 'Ahodwoproperties | Accounts', 'business': business, 'post_ref':post_ref}
 	if request.method == 'POST':
 		debit = 0
 		credit = 0
@@ -301,6 +308,7 @@ def accounts(request):
 		description = request.POST['description']
 		comment = request.POST['comment']
 		post_ref = request.POST['post_ref']
+		business = request.POST['business']
 		transaction_type = request.POST['transaction_type']
 		if transaction_type == 'debit':
 			debit = request.POST['amount']
@@ -323,7 +331,7 @@ def accounts(request):
 		else:
 			balance = float(credit) - float(debit)
 			transaction_ref_no = 10000001
-		p = Accounts(transaction_ref_no=transaction_ref_no, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
+		p = Accounts(transaction_ref_no=transaction_ref_no, transaction_type=transaction_type, business=business, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
 		p.save()
 		m = ''
 		if transaction_type == 'debit':
@@ -331,5 +339,7 @@ def accounts(request):
 		messages.error(request, 'You have succefully added a '+ transaction_type+ ' of ₵'+m+request.POST['amount']+ ' to the account.')
 		return render(request, 'pages/accounts.html', context)
 	return render(request, 'pages/accounts.html', context)
+
+
 
 

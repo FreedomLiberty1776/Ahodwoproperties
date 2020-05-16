@@ -88,7 +88,7 @@
 								<span class="inlineinput">
 									<label for="">Payment Method*</label>
 								<select name="method" class="form-control">
-								<option selected="true" disabled="disabled">Select Agent</option>
+								<option selected="true" disabled="disabled">Select Payment Method</option>
 								{% for i in method %}
 										<option value="{{ i.payment_method }} ">{{ i.payment_method }} </option>
 								{% endfor %}
@@ -112,7 +112,26 @@
 									<label for="date">Date*</label>
 									<input type="date" name="date" class="form-control"  placeholder="Date of Birth"  required>
 								</div>
-							
+								
+								<span class="inlineinput">
+									<label for="address">Post Ref*</label>
+								<select name="post_ref" class="form-control">
+								<option selected="true" disabled="disabled">Select Post Ref Item</option>
+								{% for i in post_ref %}
+										<option value="{{ i.post_ref }} ">{{ i.service_item }} </option>
+								{% endfor %}
+								</select>
+								</span> <br><br>
+						 
+								<span class="inlineinput">
+									<label for="address">Business*</label>
+								<select name="business" class="form-control">
+								<option selected="true" disabled="disabled">Select Business</option>
+								{% for i in business %}
+										<option value="{{ i.business_id }} ">{{ i.business }} </option>
+								{% endfor %}
+								</select>
+								</span> <br><br>
 								
 								<input type="submit" value="Create Invoice" class="btn btn-secondary btn-block">
 							</form>

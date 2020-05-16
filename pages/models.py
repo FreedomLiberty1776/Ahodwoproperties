@@ -11,6 +11,8 @@ class Transaction(models.Model):
 	property_type = models.CharField(max_length=50, null=True)
 	location = models.CharField(max_length=50, null=True)
 	sales_price = models.IntegerField()
+	post_ref = models.IntegerField(null=True)
+	business = models.IntegerField(null=True)
 	percent_charged = models.IntegerField()
 	payment_method = models.CharField(max_length=50)
 	agent = models.CharField(max_length=60)
@@ -74,8 +76,8 @@ class Accounts(models.Model):
 	comment = models.CharField(max_length=1000, null=True)
 	agent = models.CharField(max_length=50)
 	post_ref = models.IntegerField()
-	transaction_type = models.CharField(max_length=20, null=True)
 	business = models.IntegerField(null=True)
+	transaction_type = models.CharField(max_length=20, null=True)
 	debit= models.DecimalField(max_digits=10,decimal_places=2, null=True)
 	credit= models.DecimalField(max_digits=10,decimal_places=2, null=True)
 	balance = models.DecimalField(max_digits=10, decimal_places=2)
@@ -92,11 +94,22 @@ class Post_Ref(models.Model):
 		return self.service_item
 
 class Business(models.Model):
+	select_status = [
+		('Active', 'Active'),
+		('Suspended', 'Suspended'),
+		('Closed', 'Close')
+  ]
 	business = models.CharField(max_length=100)
 	description = models.CharField(max_length=500)
 	business_id = models.IntegerField(unique=True)
+	start_date = models.DateField(default=datetime.now)
+	status = models.CharField(max_length=20,choices=select_status, null=True)
 	def __str__(self):
 		return self.business
+
+
+class Search(models.Model):
+	name = models.CharField(max_length=100)
 
 	 
 	
