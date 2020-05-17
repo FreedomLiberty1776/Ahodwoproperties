@@ -21,7 +21,21 @@ def createinvoice(request):
 			address= request.POST['address']
 			service= request.POST['service']
 			cost= request.POST['cost']
-			method= request.POST['method']
+			method = request.POST['method']
+			# if request.POST['usd_equi']:
+			# 	usd_equi = str(request.POST['usd_equi'])
+			# else:
+			usd_equi = ''
+			# if request.POST['usd_rate']:
+			# 	usd_rate = str(request.POST['usd_rate'])
+			# else:
+			usd_rate = ''
+			# if request.POST['rate_reference']:
+			# 	rate_reference = request.POST['rate_reference']
+			# else:
+			rate_reference = ''
+			# usd_rate = request.POST['usd_rate']
+			# rate_reference = request.POST['rate_reference']
 			charge = request.POST['charge']
 			post_ref = request.POST['post_ref']
 			business = request.POST['business']
@@ -51,7 +65,7 @@ def createinvoice(request):
 			else:
 				balance = credit - debit
 				transaction_ref_no = 10000001
-			j= Accounts(transaction_ref_no=transaction_ref_no, transaction_type=transaction_type, business=business, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
+			j= Accounts(usd_equi=usd_equi, usd_rate=usd_rate, rate_reference=rate_reference, transaction_ref_no=transaction_ref_no, transaction_type=transaction_type, business=business, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
 			p = Transaction(charge=charge, invoice_number=invoice_number, first=first, last=last, address=address, location=location, property_type=property_type, service=service, sales_price=cost, percent_charged = charge, payment_method =method, agent=agent, date=date)
 			p.save()
 			j.save()
@@ -309,6 +323,9 @@ def accounts(request):
 		comment = request.POST['comment']
 		post_ref = request.POST['post_ref']
 		business = request.POST['business']
+		usd_equi = request.POST['usd_equi']
+		usd_rate = request.POST['usd_rate']
+		rate_reference = request.POST['rate_reference']
 		transaction_type = request.POST['transaction_type']
 		if transaction_type == 'debit':
 			debit = request.POST['amount']
@@ -331,7 +348,7 @@ def accounts(request):
 		else:
 			balance = float(credit) - float(debit)
 			transaction_ref_no = 10000001
-		p = Accounts(transaction_ref_no=transaction_ref_no, transaction_type=transaction_type, business=business, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
+		p = Accounts(usd_equi=usd_equi, usd_rate=usd_rate, rate_reference=rate_reference, transaction_ref_no=transaction_ref_no, transaction_type=transaction_type, business=business, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
 		p.save()
 		m = ''
 		if transaction_type == 'debit':

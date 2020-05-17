@@ -169,7 +169,7 @@
 															<tr>
 																	<td>
 																		<strong>Billed By:</strong><br>
-																			Ahodwoproperties<br>
+																			Ahodwo Homes and Properties<br>
 																			Opposite Police Charge Office<br>
 																			Berekum, Brong Ahafo. <br>
 																			{{data.phone}} <br> <br>
@@ -247,16 +247,6 @@
 											</tr>
           				{% endif %}
 									
-									<!-- <tr class="item last">
-											<td>
-												
-											</td>
-											
-											<td>
-													$10.00
-											</td>
-									</tr> -->
-									
 									<tr class="total">
 											<td></td>
 											
@@ -266,7 +256,10 @@
 									</tr>
 							</table>
 							<br>
-							<p style="margin-top: 0;">* Invoice Prepared by: {{ data.agent }}</p>
+							{% if data.service != 'Registration ' %}
+								<strong><p>***Service charge is not refundable***</p></strong>
+          		{% endif %}
+							<p style="margin-top: 0;">* Invoice Prepared by: {{ data.agent }} *</p>
 							<p style="text-align: center;"> <strong style="text-align: center;">Thank You For Doing Business With us!</strong></p>
 							<p style="text-align: center;"> <strong style="text-align: center;">Serving Beyong Expectation!</strong></p>
 							

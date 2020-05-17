@@ -1,6 +1,12 @@
 from django.contrib import admin
 from . models import Transaction, Business, Post_Ref, Properties, Agent, Service, Payment_method, Property_type, Accounts
 
+
+
+admin.site.site_header = 'Ahodwo Homes and Properties'
+
+
+
 class TransactionAdmin(admin.ModelAdmin):
 	list_display = ( 'invoice_number', 'first', 'last', 'service', 'charge')
 	list_display_links = ('invoice_number','first')
@@ -42,6 +48,7 @@ class ServiceAdmin(admin.ModelAdmin):
 	list_display = ( 'service', 'description')
 	list_display_links = ('service', 'description')
 	search_fields = ('service', 'description')
+	exclude = ('description',)
 	list_per_page = 25
 
 class PropertyTypeAdmin(admin.ModelAdmin):

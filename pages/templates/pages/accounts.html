@@ -50,20 +50,37 @@
 								</span> <br><br>
 						 
 								<p style="padding-bottom: 0;">Select Transaction Type*</p>
-            <input type="radio" id="multiple_choice" name="transaction_type" value="debit">
-            Debit
+            <input type="radio" id="multiple_choice" name="transaction_type" value="debit">Debit
             <input type="radio" id="calculated" name="transaction_type" value="credit"> Credit<br>
 								<br>
 						<div class="form-group">
 									<label for="address">Amount ₵*</label>
 									<input type="number" name="amount" class="form-control"  required>
 								</div><br>
+								<input type="checkbox"  id="checkbox"> Check for USD input
+								<br> <br>
+								<div id="usd" style="display: block;">
+						<div class="form-group">
+									<label for="address">USD Equivalent $*</label>
+									<input type="number" name="usd_equi" step="any" id="usd_equi" class="form-control">
+								</div><br>								
+						<div class="form-group">
+									<label for="address">USD Rate*</label>
+									<input type="number" name="usd_rate" step="any" id="usd_rate" class="form-control">
+								</div><br>
+						<div class="form-group">
+									<label for="address">Rate Reference*</label>
+									<input type="text" name="rate_reference" id="rate_reference" class="form-control"  >
+								</div>
+							</div>
+								<br>
 								<div class="form-group">
 									<label for="address">Agent*</label>
 									{% if request.user.is_authenticated %}
 										<input type="text" name="agent" value="{{ user.first_name }} {{ user.last_name }}" class="form-control"  readonly >
         					{% endif %}
-								</div> <br>						 
+								</div> <br>
+													 
 								<div class="form-group">
 									<label for="date">Transaction Date*</label>
 									<input type="date" name="transaction_date" class="form-control"  placeholder="Date of Birth"  required>
@@ -107,9 +124,18 @@
 	link =  document.getElementById('link')
 	success =  document.getElementById('success')
 	trigger = '{{trigger|safe}}'
-	let return_value = JSON.parse(trigger)
+	let return_value;
+	if (trigger){
+		return_value = JSON.parse(trigger)
+	}
+	
 	
 		window.onload = (event) => {
+		document.getElementById("checkbox").checked = false;
+		document.getElementById('usd').style.display="none"
+		document.getElementById('usd_equi').value = ''
+		document.getElementById('usd_rate').value = ''
+		document.getElementById('rate_reference').value = ''
 		response = ''
 		if(trigger){ 
 		response+= `<p>You have successfully added a service with the following information</p>
@@ -120,6 +146,19 @@
 		}
 		
 	};
+	hider = document.getElementById('usd')
+	checkbox = document.getElementById('checkbox')
+	document.getElementById('checkbox').addEventListener('click', function(event){
+		if (checkbox.checked){
+			hider.style.display="block"
+		}else if (checkbox.checked === false){
+			hider.style.display="none"
+			document.getElementById('usd_equi').value = ''
+			document.getElementById('usd_rate').value = ''
+			document.getElementById('rate_reference').value = ''
+		}
+	})
+	
 </script>
 	{% endblock %}
    
