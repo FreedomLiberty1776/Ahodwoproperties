@@ -23,7 +23,6 @@ class Transaction(models.Model):
 		return 'AHP'+ str(self.invoice_number)
 
 class Properties(models.Model):
-	
 	electorial_area = models.CharField(max_length=100)
 	sub_area = models.CharField(max_length=100,null=True)
 	description = models.CharField(max_length=200)
@@ -113,6 +112,35 @@ class Business(models.Model):
 
 class Search(models.Model):
 	name = models.CharField(max_length=100)
+
+class Inquiry(models.Model):
+	name = models.CharField(max_length=100)
+	gender = models.CharField(max_length=20)
+	occupation = models.CharField(max_length=20)
+	date_of_request= models.DateField()
+	service = models.CharField(max_length=50)
+	service_area = models.CharField(max_length=50)
+	type_of_property = models.CharField(max_length=50)
+	address = models.CharField(max_length=50)
+	willing_to_pay = models.BigIntegerField()
+	willing_to_take = models.BigIntegerField()
+	price_per_month = models.BigIntegerField()
+	contact = models.BigIntegerField()
+	is_married = models.BooleanField(default=False)
+	number_seeking_rent = models.IntegerField()
+	availability_of_water = models.BooleanField(default=False)
+	has_electricity = models.BooleanField(default=False)
+	has_shared_meter = models.BooleanField(default=False)
+	years_in_advance = models.IntegerField()
+	tenant_prefered = models.CharField(max_length=200)
+	deal_breaker = models.CharField(max_length=1000)
+
+	
+
+
+
+
+
 
 	 
 	

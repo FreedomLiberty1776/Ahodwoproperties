@@ -66,6 +66,7 @@ cord = cane[property_id]['geolocation']
 cords = cord.slice(1, cord.length-1).split(',')
 console.log(property_id)
 search_property = {coords:{lat:parseFloat(cords[0]), lng:parseFloat(cords[1])},
+animation: google.maps.Animation.DROP,
 	content:`
 	<div class="card-header bg-dark text-white">
 		<h4>
@@ -82,7 +83,7 @@ search_property = {coords:{lat:parseFloat(cords[0]), lng:parseFloat(cords[1])},
 	<p><strong>Electorial Area:</strong> ${cane[property_id]['electorial_area']}</p>
 	<p><strong>Geolocation:</strong> ${cane[property_id]['geolocation']}</p>
 	<p><strong>Owner:</strong> ${cane[property_id]['owner']}</p>
-	<p><strong>Owner's Contact:</strong> ${cane[property_id]['onwer_contact']}</p>
+	<p><strong>Owner's Contact:</strong> ${cane[property_id]['owner_contact']}</p>
 	<p><strong>Price:</strong> ₵${cane[property_id]['price']}</p>
 	<p><strong>Date Added:</strong> ${cane[property_id]['date']}</p>
 		</div>
@@ -121,6 +122,7 @@ initMap()
 		function(event){
 			//add marker
 			addMarker({coords:event.latLng,
+				draggable: true,
 				 content:`<div class="card-header bg-dark text-white">
 				<h4>
 					<center><i class="fas fa-user-plus"></i> Property Form</h4></center>
@@ -148,7 +150,7 @@ initMap()
 				
 								<div class="form-group">
 									<label for="first_name">Geolocation*</label>
-									<input type="text" name="geolocation" class="form-control"   value="${event.latLng}" readonly>
+									<input type="text" name="geolocation" id="geolocation" class="form-control"   value="${event.latLng}" readonly>
 								</div>
 				
 								<div class="form-group">
@@ -184,6 +186,12 @@ initMap()
 			</div>
 			</div>
 			`});
+		
+
+		
+		
+		
+			
 		});
 
 		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png';
@@ -221,17 +229,31 @@ initMap()
 		function addMarker(props){
 			var marker = new google.maps.Marker({
 				position:props.coords,
+				draggable:props.draggable,
+				animation: props.animation,
 				map:map,
-				draggable:props.draggable
+				
 			});
 
 			var infoWindow = new google.maps.InfoWindow({
 				content:props.content
+				
 			});
 
 			marker.addListener('click', function(){
 				infoWindow.open(map, marker);
 			});
+
+			marker.addListener('dragend', function(event){
+			if(marker.draggable){
+				coke = `(${event.latLng.lat()},${event.latLng.lng()})`
+				infoWindow.open(map, marker);
+				document.getElementById('geolocation').value = coke
+				console.log(coke)
+			}	
+				
+			});
+			
 		}
 	
 		}
@@ -240,7 +262,7 @@ initMap()
 
 </script>
 <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTYqnwWKhDp98RqkSALp9fwCVW-5DrlGg&callback=initMap">
+  src="https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyDTYqnwWKhDp98RqkSALp9fwCVW-5DrlGg&callback=initMap">
 </script>
 
 <!-- javascript for success message modal response -->
