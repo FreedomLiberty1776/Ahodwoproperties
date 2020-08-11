@@ -5,114 +5,115 @@
 <!-- <!doctype html>
 <html lang="en">
   <head> -->
-    <!-- Required meta tags -->
-    <!-- <meta charset="utf-8">
+<!-- Required meta tags -->
+<!-- <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
 
-    <!-- Bootstrap CSS -->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!-- Bootstrap CSS -->
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>Login</title>
   </head> -->
-  <!-- <body> -->
-    <!-- Image and text -->
-  
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<!-- <body> -->
+<!-- Image and text -->
+
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
       <a class="navbar-brand" href="#" >
         <img src="{% static 'logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
         Ahodwoproperties Payment System
       </a>
 		</nav> -->
-	{% block content %}
-	{% if messages %}
-		<div class="alert alert-warning alert-dismissable">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-  {% for message in messages %}
-    <p>{{ message }}</p>
-  {% endfor %}
-		</div>
-	{% endif %}
+{% block content %}
+{% if messages %}
+<div class="alert alert-warning alert-dismissable">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	{% for message in messages %}
+	<p>{{ message }}</p>
+	{% endfor %}
+</div>
+{% endif %}
 
-  <section id="register" class="bg-light py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 mx-auto">
-          <div class="card">
-            <div class="card-header bg-dark text-white">
-              <center><h4>
-                <i class="fas fa-user-plus"></i> Ahodwoproperties Property Types</h4></center>
-            </div>
-            <div class="forming">
-            <div class="card-body">
-              <div class="content-section">
-                  <!-- <div class="container"> -->
-                    <div class="content-section">
-                          <form action="{% url 'property_type' %}" method="POST">
-															{% csrf_token %}
-															<div class="form-group">
-																<label for="address">Property Types*</label>
-																<input type="text" name="property_type" class="form-control"  required>
-															</div>
-															<div class="form-group">
-																<label for="address">Service Description</label>
-																<input type="text" name="description" class="form-control"  >
-															</div>
-                              <input type="submit" value="Add Property Type" class="btn btn-secondary btn-block">
-                          </form>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-	</section>
-	
+<section id="register" class="bg-light py-5">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 mx-auto">
+				<div class="card">
+					<div class="card-header bg-dark text-white">
+						<center>
+							<h4>
+								<i class="fas fa-user-plus"></i> Ahodwoproperties Property Types</h4>
+						</center>
+					</div>
+					<div class="forming">
+						<div class="card-body">
+							<div class="content-section">
+								<!-- <div class="container"> -->
+								<div class="content-section">
+									<form action="{% url 'property_type' %}" method="POST">
+										{% csrf_token %}
+										<div class="form-group">
+											<label for="address">Property Types*</label>
+											<input type="text" name="property_type" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label for="address">Service Description</label>
+											<input type="text" name="description" class="form-control">
+										</div>
+										<input type="submit" value="Add Property Type" class="btn btn-secondary btn-block">
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	</div>
+</section>
+
 
 <!-- Hidden Modal reponse box -->
 <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-	<div class="modal-content">
-		<div class="modal-header text-center">
-			<h4 class="modal-title w-100 font-weight-bold">Success!</h4>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-		<div id="success">	
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100 font-weight-bold">Success!</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="success">
+			</div>
 		</div>
 	</div>
 </div>
-</div>
 
 <div class="text-center" style="display: none;">
-<a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
+	<a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
 </div>
 
 <!-- javascript for success message modal response -->
 <script>
-link =  document.getElementById('link')
-success =  document.getElementById('success')
-trigger = '{{trigger|safe}}'
-let return_value = JSON.parse(trigger)
+	link = document.getElementById('link')
+	success = document.getElementById('success')
+	trigger = '{{trigger|safe}}'
+	let return_value = JSON.parse(trigger)
 
 	window.onload = (event) => {
-	response = ''
-	if(trigger){ 
-	response+= `<p>You have successfully added a property type with the following information</p>
+		response = ''
+		if (trigger) {
+			response += `<p>You have successfully added a property type with the following information</p>
 		<p><strong>Property Type: </strong>${return_value['trigger']['property_type']}</p>
 		<p><strong>Description: </strong>${return_value['trigger']['description']}</p>`;
-		success.innerHTML = response
-		link.click()
-	}
-};
+			success.innerHTML = response
+			link.click()
+		}
+	};
 </script>
 
 
-	{% endblock %}
-
+{% endblock %}

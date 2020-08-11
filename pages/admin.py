@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Transaction, Business, Post_Ref, Properties, Agent, Service, Payment_method, Property_type, Accounts
+from . models import Transaction, Business, Post_Ref, Properties, Agent, Service, Payment_method, Property_type, Accounts, Task
 
 
 
@@ -59,6 +59,7 @@ class PropertyTypeAdmin(admin.ModelAdmin):
 
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Agent)
+admin.site.register(Task)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(Payment_method, PaymentMethodAdmin)
 admin.site.register(Property_type, PropertyTypeAdmin)

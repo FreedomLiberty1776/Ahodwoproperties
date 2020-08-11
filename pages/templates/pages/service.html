@@ -1,112 +1,100 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block content %}	
+{% block content %}
 {% if messages %}
-	<div class="alert alert-warning alert-dismissable">
+<div class="alert alert-warning alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-{% for message in messages %}
+	{% for message in messages %}
 	<p>{{ message }}</p>
-{% endfor %}
-	</div>
+	{% endfor %}
+</div>
 {% endif %}
-  <section id="register" class="bg-light py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 mx-auto">
-          <div class="card">
-            <div class="card-header bg-dark text-white">
-              <h4>
-                <center><i class="fas fa-user-plus"></i> Ahodwoproperties Service</h4></center>
-            </div>
-            <div class="forming">
-            <div class="card-body">
-              <div class="content-section">
-                  <!-- <div class="container"> -->
-                    <div class="content-section">
-                          <form action="{% url 'service' %}" method="POST">
-															{% csrf_token %}
-															<div class="form-group">
-																<label for="address">Service*</label>
-																<input type="text" name="service" class="form-control"  required>
-															</div>
-															<div class="form-group">
-																<label for="address">Service Description</label>
-																<input type="text" name="description" class="form-control"  >
-															</div>
-                              <input type="submit" value="Add Service" class="btn btn-secondary btn-block">
-                          </form>
-                    </div>
-              </div>
-            </div>
-            </div>
-                          <!-- <div class="border-top pt-3">
+<section id="register" class="bg-light py-5">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 mx-auto">
+				<div class="card">
+					<div class="card-header bg-dark text-white">
+						<h4>
+							<center><i class="fas fa-user-plus"></i> Ahodwoproperties Service
+						</h4>
+						</center>
+					</div>
+					<div class="forming">
+						<div class="card-body">
+							<div class="content-section">
+								<!-- <div class="container"> -->
+								<div class="content-section">
+									<form action="{% url 'service' %}" method="POST">
+										{% csrf_token %}
+										<div class="form-group">
+											<label for="address">Service*</label>
+											<input type="text" name="service" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label for="address">Service Description</label>
+											<input type="text" name="description" class="form-control">
+										</div>
+										<input type="submit" value="Add Service" class="btn btn-secondary btn-block">
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="border-top pt-3">
                               <small class="text-muted"> Need An account?
                               </small>
                           </div> -->
-                      </div>
-                  </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-	</section>
-	
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	</div>
+</section>
 
-	<!-- Hidden Modal reponse box -->
-	<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Success!</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+
+<!-- Hidden Modal reponse box -->
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100 font-weight-bold">Success!</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			<div id="success">	
+			<div id="success">
 			</div>
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
 
 <div class="text-center" style="display: none;">
-  <a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
+	<a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
 </div>
 
 <!-- javascript for success message modal response -->
 <script>
-	link =  document.getElementById('link')
-	success =  document.getElementById('success')
+	link = document.getElementById('link')
+	success = document.getElementById('success')
 	trigger = '{{trigger|safe}}'
 	let return_value = JSON.parse(trigger)
-	
-		window.onload = (event) => {
+
+	window.onload = (event) => {
 		response = ''
-		if(trigger){ 
-		response+= `<p>You have successfully added a service with the following information</p>
+		if (trigger) {
+			response += `<p>You have successfully added a service with the following information</p>
 			<p><strong>Service: </strong>${return_value['trigger']['service']}</p>
 			<p><strong>Description: </strong>${return_value['trigger']['description']}</p>`;
 			success.innerHTML = response
 			link.click()
 		}
-		
+
 	};
 </script>
 
 {% endblock %}
-
-
-
-
-
-
-
-
-    
- 
-
-
-
-

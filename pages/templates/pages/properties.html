@@ -3,65 +3,68 @@
 
 {% block content %}
 {% if messages %}
-	<div class="alert alert-warning alert-dismissable">
+<div class="alert alert-warning alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-{% for message in messages %}
+	{% for message in messages %}
 	<p>{{ message }}</p>
-{% endfor %}
-	</div>
+	{% endfor %}
+</div>
 {% endif %}
-	<section id="register" class="bg-light py-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 mx-auto">
-					<div class="card">
-						<div class="card-header bg-dark text-white border-none" >
-							<h4> <center><i class="fas fa-user-plus" style="text-align: center;"></i> Ahodwoproperties Properties</h4></center>
-						</div>
-						<div class="card-body">      
-							<form action="{% url 'properties' %}" method="POST">
-								{% csrf_token %}
-								<div class="form-group">
+<section id="register" class="bg-light py-5">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 mx-auto">
+				<div class="card">
+					<div class="card-header bg-dark text-white border-none">
+						<h4>
+							<center><i class="fas fa-user-plus" style="text-align: center;"></i> Ahodwoproperties Properties
+						</h4>
+						</center>
+					</div>
+					<div class="card-body">
+						<form action="{% url 'properties' %}" method="POST">
+							{% csrf_token %}
+							<div class="form-group">
 								<label for="first_name">Electorial Area* <small>eg. Adom</small></label>
-								<input type="text" name="electorial_area" class="form-control"   required>
+								<input type="text" name="electorial_area" class="form-control" required>
 							</div>
-			
-								<div class="form-group">
+
+							<div class="form-group">
 								<label for="first_name">Sub-Area* <small>eg. Adom West</small></label>
-								<input type="text" name="sub_area" class="form-control"   required>
+								<input type="text" name="sub_area" class="form-control" required>
 							</div>
 
 							<div class="form-group">
 								<label for="last_name">House/Plot Number*</label>
 								<input type="text" name="id" class="form-control">
 							</div>
-			
+
 							<div class="form-group">
 								<label for="first_name">Geolocation*</label>
 								<input type="text" name="geolocation" class="form-control" value="None">
 							</div>
-			
+
 							<div class="form-group">
 								<label for="last_name">Propperty Description <small>eg. Boys Quarters</small></label>
-								<input type="text" name="description" class="form-control"    >
+								<input type="text" name="description" class="form-control">
 							</div>
 							<div class="form-group">
 								<label for="last_name">Propperty Type <small>eg. Apartment</small></label>
-								<input type="text" name="property_type" class="form-control"    >
+								<input type="text" name="property_type" class="form-control">
 							</div>
 
 							<div class="form-group">
 								<label for="address">Owner*</label>
-								<input type="text" name="owner" class="form-control"   required>
+								<input type="text" name="owner" class="form-control" required>
 							</div>
 							<div class="form-group">
 								<label for="address">Owner's Contact*</label>
-								<input type="number" name="contact" class="form-control"   required>
+								<input type="number" name="contact" class="form-control" required>
 							</div>
 							<div class="form-group">
 								<label for="address">Price ₵*</label>
-								<input type="number" name="price" class="form-control"  required>
-							</div>						 
+								<input type="number" name="price" class="form-control" required>
+							</div>
 							<div class="form-group">
 								<label for="address">Image*</label>
 								<input type="file" id="img" name="image" accept="image/*">
@@ -69,46 +72,46 @@
 							<input type="text" value="properties" style='display:none' name="director">
 							<input type="submit" value="Add Property" class="btn btn-secondary btn-block">
 						</form>
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
 	</div>
+</section>
+</div>
 
-	<!-- Hidden Modal reponse box -->
-	<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Success!</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<!-- Hidden Modal reponse box -->
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100 font-weight-bold">Success!</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			<div id="success">	
+			<div id="success">
 			</div>
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
 
 <div class="text-center" style="display: none;">
-  <a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
+	<a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
 </div>
 
 <!-- javascript for success message modal response -->
 <script>
-	link =  document.getElementById('link')
-	success =  document.getElementById('success')
+	link = document.getElementById('link')
+	success = document.getElementById('success')
 	trigger = '{{trigger|safe}}'
 	let return_value = JSON.parse(trigger)
-	
-		window.onload = (event) => {
+
+	window.onload = (event) => {
 		response = ''
-		if(trigger){ 
-		response+= `<p>You have successfully added a property with the following information</p>
+		if (trigger) {
+			response += `<p>You have successfully added a property with the following information</p>
 			<p><strong>House/Plot No.: </strong>${return_value['trigger']['property_id']}</p>
 			<p><strong>Geolocation: </strong>${return_value['trigger']['geolocation']}</p>
 			<p><strong>Electorial Area: </strong>${return_value['trigger']['electorial_area']}</p>
@@ -122,7 +125,7 @@
 			success.innerHTML = response
 			link.click()
 		}
-		
+
 	};
 </script>
-	{% endblock %}
+{% endblock %}

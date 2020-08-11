@@ -1,67 +1,11 @@
-{% extends 'base.html'%}
-
-
-{% block title %} | Browse Property Listings {% endblock %}
-
-{% block content %}
-<style>
-	   
-	.table, thead, th, td {
-
-		padding: 0.8rem;
-		border: 1px solid black;
-		table-layout: fixed ;
-		width: 100% ;
-		border-collapse: collapse ;
-	}
-
-	.table {
-		border: 2px solid black;
-		width: 100%;
-		margin-top: 2rem;
-	}
-	th, td  {
-		padding: 10px;
-		text-align: center;
-	}
-	.bg-light {
-		background-size: 0rem;
-		padding: 0rem;
-		margin: 0rem;
-		margin-right: 2rem;
-		margin-left:auto;
-		background-color: red;
-	}
-	.contianer {
-		background-color: red;
-	}
-	.col-md-6{
-		background: red;
-		width: 0;
-	}
-	.row{
-		background-color: green;
-		size:0rem;
-		width: 2rem;
-		margin-right: 0rem;
-	}
-	
-	.card{
-		width: 25rem;
-		background-size: 0rem;
-		position: relative;
-		float:left;
-	}
-	
-
-</style>
-{% if last_balance %}
-	Last Balance:<strong> ₵{{ last_balance }}</strong>
-{% endif %}  
-{% if accounts_metrics %}
-<table class="table">
+{% extends 'base.html'%} {% block content %} {% if last_balance %}
+<p> Account Balance:<strong> ₵{{ last_balance }}</strong> </p>
+<p> Available Balance:<strong> ₵{{ availabe_balance }}</strong> </p>
+{% endif %} {% if accounts_metrics %}
+<div style="overflow-x: auto;">
+	<table class="table">
 		<thead>
-		<tr>
+			<tr>
 				<th scope="col">#</th>
 				<th scope="col">Transaction Date</th>
 				<th scope="col">Description</th>
@@ -73,44 +17,41 @@
 				<th scope="col">Agent</th>
 				<!-- <th scope="col">Transaction Agent</th> -->
 				<!-- <th scope="col">Date Added</th> -->
-		</tr>
+			</tr>
 		</thead>
-{% endif %}  
-{% if accounts_metrics %}
-{% for k in accounts_metrics %}
+		{% endif %}
 		<tbody>
-				<tr>
-						<th scope="row">{{ forloop.counter }}</th>
-						<td>{{ k.transaction_date }}</td>
-						<td>{{ k.description }}</td>
-						<td>{{ k.transaction_ref_no }}</td>
-						<td>{{ k.post_ref }}</td>
-						{% if k.debit != 0 %}
-							<td>-{{ k.debit }}</td>
-						{% else %}
-							<td>{{ k.debi }}</td>
-						{% endif %}
-						{% if k.credit != 0 %}
-							<td>{{ k.credit }}</td>
-						{% else %}
-							<td>{{ k.cred }}</td>
-						{% endif %}
-						<!-- <td>{{ k.debit }}</td> -->
-						<!-- <td>{{ k.credit }}</td> -->
-						<td>{{ k.balance }}</td>
-						<td>{{ k.agent }}</td>
-						<!-- <td>{{ k.location }}</td> -->
-						<!-- <td>{{ k.agent }}</td> -->
-						<td>{{ k.date }}</td>
-						
-				</tr>        
-		</tbody>       
-{% endfor %}
-</table>
+			{% if accounts_metrics %} {% for k in accounts_metrics %}
+			<tr class="tbody">
+				<th scope="row">{{ forloop.counter }}</th>
+				<td>{{ k.transaction_date }}</td>
+				<td>{{ k.description }}</td>
+				<td>{{ k.transaction_ref_no }}</td>
+				<td>{{ k.post_ref }}</td>
+				{% if k.debit != 0 %}
+				<td>-{{ k.debit }}</td>
+				{% else %}
+				<td>{{ k.debi }}</td>
+				{% endif %} {% if k.credit != 0 %}
+				<td>{{ k.credit }}</td>
+				{% else %}
+				<td>{{ k.cred }}</td>
+				{% endif %}
+				<!-- <td>{{ k.debit }}</td> -->
+				<!-- <td>{{ k.credit }}</td> -->
+				<td>{{ k.balance }}</td>
+				<td>{{ k.agent }}</td>
+				<!-- <td>{{ k.location }}</td> -->
+				<!-- <td>{{ k.agent }}</td> -->
+				<td>{{ k.date }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
 {% else %}
 <p>No transaction has been added to the database.</p>
 {% endif %}
 
-
-  <br>
+<br />
 {% endblock %}

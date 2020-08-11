@@ -1,28 +1,31 @@
 {% extends 'base.html' %}
-{% block content %}	
+{% block content %}
 {% if messages %}
-	<div class="alert alert-success alert-dismissable">
+<div class="alert alert-success alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-{% for message in messages %}
+	{% for message in messages %}
 	<p>{{ message }}</p>
-{% endfor %}
-	</div>
+	{% endfor %}
+</div>
 {% endif %}
-	<section id="register" class="bg-light py-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 mx-auto">
-					<div class="card">
-						<div class="card-header bg-dark text-white border-none" >
-							<h4> <center><i class="fas fa-user-plus" style="text-align: center;"></i> Ahodwoproperties Accounts</h4></center>
-						</div>
-						<div class="card-body">      
-								<form action="{% url 'accounts' %}" method="POST">
-									{% csrf_token %}
-									
-								<div class="form-group">
-									<label for="description">Description*</label>
-									<textarea name="description" id="" cols="65%" rows="2" style="border-radius: 5px;"></textarea><br><br>
+<section id="register" class="bg-light py-5">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 mx-auto">
+				<div class="card">
+					<div class="card-header bg-dark text-white border-none">
+						<h4>
+							<center><i class="fas fa-user-plus" style="text-align: center;"></i> Ahodwoproperties Accounts
+						</h4>
+						</center>
+					</div>
+					<div class="card-body">
+						<form action="{% url 'accounts' %}" method="POST">
+							{% csrf_token %}
+
+							<div class="form-group">
+								<label for="description">Description*</label>
+								<textarea name="description" id="" cols="65%" rows="2" style="border-radius: 5px;"></textarea><br><br>
 								<!-- </div>
 								<div class="form-group">
 									<label for="address">Post Ref*</label>
@@ -31,134 +34,134 @@
 
 								<span class="inlineinput">
 									<label for="address">Post Ref*</label>
-								<select name="post_ref" class="form-control">
-								<option selected="true" disabled="disabled">Select Post Ref Item</option>
-								{% for i in post_ref %}
+									<select name="post_ref" class="form-control">
+										<option selected="true" disabled="disabled">Select Post Ref Item</option>
+										{% for i in post_ref %}
 										<option value="{{ i.post_ref }} ">{{ i.service_item }} </option>
-								{% endfor %}
-								</select>
+										{% endfor %}
+									</select>
 								</span> <br><br>
-						 
+
 								<span class="inlineinput">
 									<label for="address">Business*</label>
-								<select name="business" class="form-control">
-								<option selected="true" disabled="disabled">Select Business</option>
-								{% for i in business %}
+									<select name="business" class="form-control">
+										<option selected="true" disabled="disabled">Select Business</option>
+										{% for i in business %}
 										<option value="{{ i.business_id }} ">{{ i.business }} </option>
-								{% endfor %}
-								</select>
+										{% endfor %}
+									</select>
 								</span> <br><br>
-						 
+
 								<p style="padding-bottom: 0;">Select Transaction Type*</p>
-            <input type="radio" id="multiple_choice" name="transaction_type" value="debit">Debit
-            <input type="radio" id="calculated" name="transaction_type" value="credit"> Credit<br>
+								<input type="radio" id="multiple_choice" name="transaction_type" value="debit">Debit
+								<input type="radio" id="calculated" name="transaction_type" value="credit"> Credit<br>
 								<br>
-						<div class="form-group">
+								<div class="form-group">
 									<label for="address">Amount ₵*</label>
-									<input type="number" name="amount" class="form-control"  required>
+									<input type="number" name="amount" class="form-control" required>
 								</div><br>
-								<input type="checkbox"  id="checkbox"> Check for USD input
+								<input type="checkbox" id="checkbox"> Check for USD input
 								<br> <br>
 								<div id="usd" style="display: block;">
-						<div class="form-group">
-									<label for="address">USD Equivalent $*</label>
-									<input type="number" name="usd_equi" step="any" id="usd_equi" class="form-control">
-								</div><br>								
-						<div class="form-group">
-									<label for="address">USD Rate*</label>
-									<input type="number" name="usd_rate" step="any" id="usd_rate" class="form-control">
-								</div><br>
-						<div class="form-group">
-									<label for="address">Rate Reference*</label>
-									<input type="text" name="rate_reference" id="rate_reference" class="form-control"  >
+									<div class="form-group">
+										<label for="address">USD Equivalent $*</label>
+										<input type="number" name="usd_equi" step="any" id="usd_equi" class="form-control">
+									</div><br>
+									<div class="form-group">
+										<label for="address">USD Rate*</label>
+										<input type="number" name="usd_rate" step="any" id="usd_rate" class="form-control">
+									</div><br>
+									<div class="form-group">
+										<label for="address">Rate Reference*</label>
+										<input type="text" name="rate_reference" id="rate_reference" class="form-control">
+									</div>
 								</div>
-							</div>
 								<br>
 								<div class="form-group">
 									<label for="address">Agent*</label>
 									{% if request.user.is_authenticated %}
-										<input type="text" name="agent" value="{{ user.first_name }} {{ user.last_name }}" class="form-control"  readonly >
-        					{% endif %}
+									<input type="text" name="agent" value="{{ user.first_name }} {{ user.last_name }}"
+										class="form-control" readonly>
+									{% endif %}
 								</div> <br>
-													 
+
 								<div class="form-group">
 									<label for="date">Transaction Date*</label>
-									<input type="date" name="transaction_date" class="form-control"  placeholder="Date of Birth"  required>
-								</div>				
+									<input type="date" name="transaction_date" class="form-control" placeholder="Date of Birth" required>
+								</div>
 								<div class="form-group">
 									<label for="description">Comments*</label>
 									<textarea name="comment" id="" cols="65%" rows="2" style="border-radius: 5px;"></textarea>
-								</div>				
+								</div>
 								<input type="submit" value="Add Transaction" class="btn btn-secondary btn-block">
-							</form>					 
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
 	</div>
+</section>
+</div>
 
-	<!-- Hidden Modal reponse box -->
-	<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Success!</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<!-- Hidden Modal reponse box -->
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100 font-weight-bold">Success!</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			<div id="success">	
+			<div id="success">
 			</div>
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
 <div class="text-center" style="display: none;">
-  <a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
+	<a href="" id="link" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm"></a>
 </div>
 
 <!-- javascript for success message modal response -->
 <script>
-	link =  document.getElementById('link')
-	success =  document.getElementById('success')
+	link = document.getElementById('link')
+	success = document.getElementById('success')
 	trigger = '{{trigger|safe}}'
 	let return_value;
-	if (trigger){
+	if (trigger) {
 		return_value = JSON.parse(trigger)
 	}
-	
-	
-		window.onload = (event) => {
+
+
+	window.onload = (event) => {
 		document.getElementById("checkbox").checked = false;
-		document.getElementById('usd').style.display="none"
+		document.getElementById('usd').style.display = "none"
 		document.getElementById('usd_equi').value = ''
 		document.getElementById('usd_rate').value = ''
 		document.getElementById('rate_reference').value = ''
 		response = ''
-		if(trigger){ 
-		response+= `<p>You have successfully added a service with the following information</p>
+		if (trigger) {
+			response += `<p>You have successfully added a service with the following information</p>
 			<p><strong>Service: </strong>${return_value['trigger']['service']}</p>
 			<p><strong>Description: </strong>${return_value['trigger']['description']}</p>`;
 			success.innerHTML = response
 			link.click()
 		}
-		
+
 	};
 	hider = document.getElementById('usd')
 	checkbox = document.getElementById('checkbox')
-	document.getElementById('checkbox').addEventListener('click', function(event){
-		if (checkbox.checked){
-			hider.style.display="block"
-		}else if (checkbox.checked === false){
-			hider.style.display="none"
+	document.getElementById('checkbox').addEventListener('click', function (event) {
+		if (checkbox.checked) {
+			hider.style.display = "block"
+		} else if (checkbox.checked === false) {
+			hider.style.display = "none"
 			document.getElementById('usd_equi').value = ''
 			document.getElementById('usd_rate').value = ''
 			document.getElementById('rate_reference').value = ''
 		}
 	})
-	
+
 </script>
-	{% endblock %}
-   
+{% endblock %}

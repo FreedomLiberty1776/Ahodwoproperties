@@ -137,7 +137,17 @@ class Inquiry(models.Model):
 
 	
 
+class Task(models.Model):
+	task_name = models.CharField(max_length=200)
+	added_by = models.CharField(max_length=200)
+	task_owner = models.CharField(max_length=200)
+	added_on = models.DateTimeField(default=datetime.now)
+	complete_by =  models.DateField()
+	is_completed = models.BooleanField(default=False)
+	def __str__(self):
+		return self.task_name
 
+	 
 
 
 

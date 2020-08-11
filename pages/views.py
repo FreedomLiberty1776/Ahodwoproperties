@@ -1,3 +1,10 @@
+
+
+# from django.http import HttpResponse 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Task
+from .serializers import TaskSerializer
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from pages.models import Properties, Agent, Accounts, Transaction, Service, Property_type, Payment_method, Post_Ref, Business
@@ -21,37 +28,25 @@ def createinvoice(request):
 			address= request.POST['address']
 			service= request.POST['service']
 			cost= request.POST['cost']
-			method = request.POST['method']
-			# if request.POST['usd_equi']:
-			# 	usd_equi = str(request.POST['usd_equi'])
-			# else:
-			usd_equi = ''
-			# if request.POST['usd_rate']:
-			# 	usd_rate = str(request.POST['usd_rate'])
-			# else:
+			method = request.POST['method']	
+			usd_equi = ''			
 			usd_rate = ''
-			# if request.POST['rate_reference']:
-			# 	rate_reference = request.POST['rate_reference']
-			# else:
 			rate_reference = ''
-			# usd_rate = request.POST['usd_rate']
-			# rate_reference = request.POST['rate_reference']
 			charge = request.POST['charge']
 			post_ref = request.POST['post_ref']
 			business = request.POST['business']
 			contact= request.POST['contact']
 			location= request.POST['location']
 			property_type= request.POST['property_type']
-			charged= (int(request.POST['charge'])/100)* int(request.POST['cost'])
+			charged= (int(charge)/100)* int(cost)
 			date= request.POST['date']
 			agent= request.POST['agent']
 			description = request.POST['description']
 			transaction_type = 'credit'
 			comment = 'None'
-			
-			charge = (int(request.POST['charge'])/100)* int(request.POST['cost'])
+			# charge = (int(request.POST['charge'])/100)* int(request.POST['cost'])
 			debit = 0
-			credit = float(charge)
+			credit = float(charged)
 			transaction_date = date
 			j_description = service +' of '+ property_type+ ': AHP'+ str(invoice_number)
 			# post_ref = 500
@@ -66,7 +61,7 @@ def createinvoice(request):
 				balance = credit - debit
 				transaction_ref_no = 10000001
 			j= Accounts(usd_equi=usd_equi, usd_rate=usd_rate, rate_reference=rate_reference, transaction_ref_no=transaction_ref_no, transaction_type=transaction_type, business=business, comment=comment, transaction_date=transaction_date,description=description,post_ref=post_ref,debit=debit,credit=credit, balance=balance, agent=agent)
-			p = Transaction(charge=charge, invoice_number=invoice_number, first=first, last=last, address=address, location=location, property_type=property_type, service=service, sales_price=cost, percent_charged = charge, payment_method =method, agent=agent, date=date)
+			p = Transaction(charge=charged, invoice_number=invoice_number, first=first, last=last, address=address, location=location, property_type=property_type, service=service, sales_price=cost, percent_charged = charge, payment_method =method, agent=agent, date=date)
 			p.save()
 			j.save()
 			data  = {
@@ -84,7 +79,7 @@ def createinvoice(request):
 			'date': request.POST['date'],
 			'description': 'Service Charge for '+ service + 'of ' + property_type + ' at ' + location,
 			"company": "Ahodwoproperties",
-			"phone": "055 3246 573 / 050 461 3609",
+			"phone": "024 333 2465 / 020 146 3758",
 			"email": "info@ahodwoproperties.com",
 			"website": "Ahodwoproperties.com",
 			}	
@@ -100,7 +95,7 @@ def properties(request):
 		property_id = request.POST['id']
 		director = request.POST['director']
 		database = Properties.objects.values_list('property_id', flat=True)
-		if property_id in database and director == 'properties':
+		if property_id in database and property_id !='none' and director == 'properties':
 			messages.error(request, 'The house/plot no. "'+property_id+'"'+' already exist in the database' )
 			return render(request, 'pages/properties.html', context)
 		elif property_id in database and director == 'map':
@@ -274,15 +269,22 @@ def property_metrics(request):
 
 @login_required
 def accounts_metrics(request):
+	queryset = Accounts.objects.all()
+	accounts_metrics = queryset
 	if Accounts.objects.count() > 0:
+		credit = [float(i.credit) for i in queryset if "Adu" not in i.agent and float(i.credit)!= 0]
+		debit = [float(i.debit) for i in queryset if "Adu" not in i.agent and float(i.debit)!= 0]
+		availabe_balance = sum(credit)-sum(debit)
+		print(availabe_balance)
 		total_debit = float(Accounts.objects.aggregate(Sum('debit'))['debit__sum'])
 		total_credit = float(Accounts.objects.aggregate(Sum('credit'))['credit__sum'])
 		last_balance = float(total_credit - total_debit)
 	else:
 		last_balance = None
-	accounts_metrics = Accounts.objects.all()
+		availabe_balance = None
 	
-	context = {'heading': 'Accounts Metrics', 'accounts_metrics':accounts_metrics, 'last_balance':last_balance, 'title':'Ahodwoproperties | Accounts Metrics'}
+	
+	context = {'heading': 'Accounts Metrics', 'accounts_metrics':accounts_metrics, 'last_balance':last_balance, 'title':'Ahodwoproperties | Accounts Metrics', 'availabe_balance':availabe_balance}
 	return render(request,'pages/accounts_metrics.html', context)
 
 
@@ -356,6 +358,67 @@ def accounts(request):
 		messages.error(request, 'You have succefully added a '+ transaction_type+ ' of ₵'+m+request.POST['amount']+ ' to the account.')
 		return render(request, 'pages/accounts.html', context)
 	return render(request, 'pages/accounts.html', context)
+
+
+@login_required
+def tasks(request):
+	return render (request, 'pages/task.html' )
+
+
+
+@api_view(['GET'])
+def apiOverview (request):
+	api_urls = {
+			'List':'/task-list/',
+			'Detail View':'/task-detail/<str:pk>/',
+			'Create':'/task-create/',
+			'Update':'/task-update/<str:pk>/',
+			'Delete':'/task-delete/<str:pk>/',
+			}
+
+	return Response (api_urls)
+
+
+@api_view(['GET'])
+def taskList (request):
+	tasks = Task.objects.all()
+	serializer= TaskSerializer(tasks, many=True)
+	return Response(serializer.data)
+
+
+@api_view(['GET'])
+def taskDetail (request, pk):
+	task = Task.objects.get(id=pk)
+	serializer= TaskSerializer(task, many=False)
+	return Response(serializer.data)
+
+
+@api_view(['POST'])
+def taskCreate (request):
+	serializer= TaskSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+	return Response(serializer.data)
+
+
+@api_view(['POST'])
+def taskUpdate (request, pk):
+	task = Task.objects.get(id=pk)
+	serializer= TaskSerializer(instance=task, data=request.data)
+	if serializer.is_valid():	
+		serializer.save()
+	return redirect('task-list')
+
+
+
+@api_view(['DELETE'])
+def taskDelete (request, pk):
+	tasks = Task.objects.get(id=pk)
+	tasks.delete()
+	return Response('Task has been deleted')
+
+
+
 
 
 

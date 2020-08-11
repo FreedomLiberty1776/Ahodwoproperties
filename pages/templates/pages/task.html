@@ -1,0 +1,450 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<style>
+	.buttons {
+		margin: auto;
+		display: flex;
+		justify-content: center;
+	}
+
+	button {
+		display: inline-block;
+		margin: auto 1rem;
+		outline: none;
+	}
+
+	.tast-item {
+		display: flex;
+		justify-content: space-between;
+		border-top: 1px solid #333;
+		border-bottom: 1px solid #333;
+		padding: 0.5rem 1rem;
+	}
+	.task-container {
+		width: 90%;
+		margin: auto;
+		margin-top: 2rem;
+	}
+
+	.task-item-info {
+		flex: 0 0 70%;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.task-item-info-header {
+		width: 70%;
+
+		display: flex;
+		justify-content: space-between;
+		padding-left: 1rem;
+		padding-right: 0.5rem;
+	}
+
+	.task-header {
+		text-align: center;
+		margin: 1rem auto;
+	}
+	.subtask-header {
+		text-align: center;
+		margin: 1rem auto;
+	}
+
+	.fa-times {
+		cursor: pointer;
+	}
+
+	.fa-times:hover {
+		color: red;
+	}
+
+	table {
+		border-bottom: 1px solid lightgray;
+	}
+
+	#submit {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	#completed {
+		padding-bottom: none;
+	}
+
+	#error-message {
+		background: red;
+		color: white;
+		padding: 0.5rem;
+		margin: 1rem auto;
+		border-radius: 5px;
+		text-align: center;
+		display: none;
+	}
+</style>
+<h2 class="task-header">Tasks Manager</h2>
+<!-- Button trigger modal -->
+<div class="buttons">
+	<button
+		type="button"
+		class="btn btn-primary"
+		data-toggle="modal"
+		data-target="#exampleModal"
+	>
+		Add Task
+	</button>
+	<button class="btn btn-primary" id="all-task">All Tasks</button>
+	<button class="btn btn-primary" id="completed-task">Completed Tasks</button>
+	<button class="btn btn-primary" id="uncompleted-task"
+		>Uncompleted Tasks</button
+	>
+</div>
+<!-- Modal -->
+<div
+	class="modal fade"
+	id="exampleModal"
+	tabindex="-1"
+	aria-labelledby="exampleModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel" style="margin: auto;"
+					>Task Form</h5
+				>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p id="error-message">Please fill all fields!</p>
+				<!-- <form> -->
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="task_name">Task Title*</label>
+					<input
+						type="text"
+						name="task_name"
+						class="form-control"
+						id="task-title"
+						required
+					/>
+				</div>
+				<!-- <div class="form-group">
+					<label for="name">Name*</label>
+					<input type="text" name="name" class="form-control" id="name" required />
+				</div> -->
+
+				<div class="form-group">
+					<label for="name">Added By*</label>
+					{% if request.user.is_authenticated %}
+					<input
+						class="form-control"
+						type="text"
+						name="name"
+						id="name"
+						value="{{ user.first_name }} {{ user.last_name }}"
+						class="form-control"
+						readonly
+					/>
+					{% endif %}
+				</div>
+				<div class="form-group">
+					<label for="task_onwer">Responsible*</label>
+					<input
+						type="text"
+						name="task_owner"
+						class="form-control"
+						id="task-owner"
+						required
+					/>
+				</div>
+				<div class="form-group">
+					<label for="due_date">Due Date*</label>
+					<input
+						type="date"
+						name="due_date"
+						class="form-control"
+						id="due-date"
+						required
+					/>
+				</div>
+				<button class="btn btn-secondary btn-block" id="submit">Add Task</button>
+				<!-- </form> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="task-container">
+	<h3 class="subtask-header">Tasks Manager</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th id="completed" scope="col">Done</th>
+				<th scope="col">Task Title</th>
+				<th scope="col">Responsible</th>
+				<th scope="col">Due Date</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody id="table-body"> </tbody>
+	</table>
+</div>
+<!-- ********************** Scripts********************* -->
+<script>
+	let lastIndex;
+	const xhr = new XMLHttpRequest();
+
+	//*********************   Get Tasks***********
+	function addTask(task) {
+		if (task !== "undefined") {
+			const tr = document.createElement("tr");
+			tr.id = task.id;
+			const th = document.createElement("th");
+			const scope = document.createAttribute("scope");
+			scope.value = "row";
+			th.setAttributeNode(scope);
+			th.textContent = lastIndex + 1;
+			tr.appendChild(th);
+			const checkbox = document.createElement("input");
+			const type = document.createAttribute("type");
+			type.value = "checkbox";
+			checkbox.setAttributeNode(type);
+			checkbox.id = "completed";
+			const td = document.createElement("td");
+			td.appendChild(checkbox);
+			tr.appendChild(td);
+			const td1 = document.createElement("td");
+			td1.textContent = task.task_name;
+			tr.appendChild(td1);
+			const td2 = document.createElement("td");
+			td2.textContent = task.task_owner;
+			tr.appendChild(td2);
+			const td3 = document.createElement("td");
+			td3.textContent = task.complete_by;
+			tr.appendChild(td3);
+			const td4 = document.createElement("td");
+			td4.innerHTML = '<i class="fas fa-times">';
+			tr.appendChild(td4);
+			document.getElementById("table-body").appendChild(tr);
+			lastIndex += 1;
+		}
+	}
+
+	//****************** Remove Task ***********
+	function removeTask(target) {
+		document.getElementById(target).remove();
+	}
+	//******************End Remove Task ***********
+
+	//********************* End of  Get Tasks***********
+	//*********************   Get Tasks***********
+
+	function getTask(id) {
+		return new Promise((resolve, reject) => {
+			fetch(`http://127.0.0.1:8081/task-detail/${id}/`)
+				.then((res) => res.json())
+				.then((response) => resolve(response))
+				.catch((err) => reject(err));
+		});
+	}
+
+	function getTasks(type) {
+		xhr.open("Get", "http://127.0.0.1:8081/task-list/", true);
+		xhr.onload = async function () {
+			if (this.status === 200) {
+				const response = JSON.parse(this.responseText);
+				await response;
+				lastIndex = response.length;
+				let results = "";
+				response.forEach((task, index) => {
+					let text_decoration = "none";
+					let checked = "";
+					let disabled = "";
+					if (task.is_completed) {
+						text_decoration = "line-through";
+						checked = "checked";
+						disabled = "disabled";
+					}
+
+					if (type === "all") {
+						results += `
+								<tr id= "${task.id}">
+									<th scope="row">${index + 1}</th>
+									<td ><input type="checkbox" name="completed" id="completed" ${disabled}
+										${checked} /></td>
+									<td style= "text-decoration: ${text_decoration};" >${task.task_name} </td>
+									<td>${task.task_owner}</td>
+									<td>${task.complete_by}</td>
+									<td><i class="fas fa-times"></td>
+								</tr>`;
+						document.getElementById("completed").style.display = "block";
+					} else if (type === "completed") {
+						if (task.is_completed) {
+							results += `
+								<tr id= "${task.id}">
+									<th scope="row">${index + 1}</th>
+
+									<td style= "text-decoration: ${text_decoration};" >${task.task_name} </td>
+									<td>${task.task_owner}</td>
+									<td>${task.complete_by}</td>
+									<td><i class="fas fa-times"></td>
+								</tr>`;
+
+							document.getElementById("completed").style.display = "none";
+						}
+					} else if (type === "uncompleted") {
+						if (!task.is_completed) {
+							results += `
+								<tr id= "${task.id}">
+									<th scope="row">${index + 1}</th>
+									<td ><input type="checkbox"
+									name="completed" id="completed" /></td>
+									<td style= "text-decoration: ${text_decoration};" >${task.task_name} </td>
+									<td>${task.task_owner}</td>
+									<td>${task.complete_by}</td>
+									<td><i class="fas fa-times"></td>
+								</tr>`;
+							document.getElementById("completed").style.display = "block";
+						}
+					}
+				});
+				document.getElementById("table-body").innerHTML = results;
+			}
+		};
+		xhr.send();
+	}
+
+	//********************* End of  Get Tasks***********
+	//*********************   Post Tasks***********
+	// Collect form values, validation and clearing after submission.
+	function collectFormValues() {
+		let error;
+		let validForm;
+		let data = "undefined";
+		let taskTitle = document.getElementById("task-title").value;
+		let taskOwner = document.getElementById("task-owner").value;
+		let name = document.getElementById("name").value;
+		let dueDate = document.getElementById("due-date").value;
+		if (name === "" || taskTitle === "" || taskOwner === "" || dueDate === "") {
+			validForm = false;
+		} else {
+			data = {
+				task_name: taskTitle,
+				added_by: name,
+				task_owner: taskOwner,
+				complete_by: dueDate,
+			};
+			validForm = true;
+		}
+		if (validForm) {
+			document.getElementById("task-title").value = "";
+			document.getElementById("task-owner").value = "";
+
+			document.getElementById("due-date").value = "";
+		}
+		return data;
+	}
+	// End of Collect form values, validation and clearing after submission.
+	function postTask(data) {
+		const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+		return new Promise((resolve, reject) => {
+			fetch("http://127.0.0.1:8081/task-create/", {
+				method: "POST",
+				headers: { "Content-type": "application/json", "X-CSRFToken": csrftoken },
+				body: JSON.stringify(data),
+			})
+				.then((res) => res.json())
+				.then((data) => resolve(data))
+				.catch((err) => reject(err));
+		});
+	}
+	//********************* End of  Post Tasks***********
+	//********************* delete Tasks***********
+	async function deleteTask(id) {
+		const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+		await fetch(`http://127.0.0.1:8081/task-delete/${id}/`, {
+			method: "DELETE",
+			headers: { "Content-type": "application/json", "X-CSRFToken": csrftoken },
+		});
+	}
+	async function updateTask(data) {
+		const task = data;
+
+		task.is_completed = !task.is_completed;
+
+		const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+		await fetch(`http://127.0.0.1:8081/task-update/${task.id}/`, {
+			method: "POST",
+			headers: { "Content-type": "application/json", "X-CSRFToken": csrftoken },
+			body: JSON.stringify(task),
+		});
+	}
+	//********************* End of  Delete Tasks***********
+
+	//********************* Loaders and EventListeners***********
+	document.addEventListener("DOMContentLoaded", (e) => {
+		getTasks("all");
+		document.querySelector(".subtask-header").textContent = "All Tasks";
+	});
+
+	function eventListners() {
+		const submitFormData = document.getElementById("submit");
+		const all = document.getElementById("all-task");
+		const tableBody = document.getElementById("table-body");
+		const completed = document.getElementById("completed-task");
+		const uncompleted = document.getElementById("uncompleted-task");
+
+		all.addEventListener("click", (e) => {
+			getTasks("all");
+			document.querySelector(".subtask-header").textContent = "All Tasks";
+			e.preventDefault();
+		});
+		completed.addEventListener("click", (e) => {
+			getTasks("completed");
+			document.querySelector(".subtask-header").textContent = "Completed Tasks";
+			e.preventDefault();
+		});
+		uncompleted.addEventListener("click", (e) => {
+			getTasks("uncompleted");
+			document.querySelector(".subtask-header").textContent = "Uncompleted Tasks";
+			e.preventDefault();
+		});
+		submitFormData.addEventListener("click", (e) => {
+			const data = collectFormValues();
+			if (data !== "undefined") {
+				postTask(data).then((res) => addTask(res));
+				document.getElementById("error-message").style.display = "none";
+			} else {
+				document.getElementById("error-message").style.display = "block";
+			}
+		});
+
+		tableBody.addEventListener("click", (e) => {
+			let id;
+			if (e.target.classList.contains("fa-times")) {
+				id = e.target.parentElement.parentElement.id;
+				const caution = prompt("Do you want to delete this task?  [y/n]");
+				if (caution === "y" || caution === "Y") {
+					deleteTask(id).then(removeTask(id));
+				}
+			} else if (e.target.id === "completed") {
+				id = e.target.parentElement.parentElement.id;
+
+				getTask(id).then((task) => {
+					updateTask(task);
+					e.target.setAttribute("disabled", "true");
+					e.target.parentElement.nextElementSibling.style.textDecoration =
+						"line-through";
+				});
+			}
+		});
+	}
+	eventListners();
+
+	//*********************End of Loaders and EventListeners***********
+</script>
+<!-- ********************** End of Scripts********************* -->
+{% endblock %}

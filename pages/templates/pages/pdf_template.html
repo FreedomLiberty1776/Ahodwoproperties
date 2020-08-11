@@ -2,289 +2,295 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-  
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <head>
-    {% if title %}
-		  <title>  {{ title }} </title>
-    {% else %}
-      <title>Ahodwproperties
-			</title>
-    {% endif %}
-		</head>
-		<style>
-			body {
-				background-image: url('static/logo1.PNG') no-repeat  center/cover;
-				
-			}
-    .invoice-box {
-        max-width: 800px;
-        margin: auto;
-        padding: 30px;
-        border: 1px solid #eee;
-        
-        font-size: 16px;
-        line-height: 24px;
-        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-        color: #555;
-    }
-    
-    .invoice-box table {
-        width: 100%;
-        line-height: inherit;
-        text-align: left;
-    }
-    
-    .invoice-box table td {
-        padding: 5px;
-        vertical-align: top;
-    }
-    
-    .invoice-box table tr td:nth-child(2) {
-        text-align: right;
-    }
-    
-    .invoice-box table tr.top table td {
-        padding-bottom: 10px;
-    }
-    
-    .invoice-box table tr.top table td.title {
-        font-size: 10px;
-				line-height: 10px;
-				padding-top: 0;
-			
-        color: #333;
-    }
-    
-    .invoice-box table tr.information table td {
-        padding-bottom: 20px;
-    }
-    
-    .invoice-box table tr.heading td {
-        background: #eee;
-        border-bottom: 1px solid #ddd;
-        font-weight: bold;
-    }
-    
-    .invoice-box table tr.details td {
-        padding-bottom: 10px;
-    }
-    
-    .invoice-box table tr.item td{
-        border-bottom: 0px solid #eee;
-    }
-    
-    .invoice-box table tr.item.last td {
-        border-bottom: none;
-    }
-    
-    .invoice-box table tr.total td:nth-child(2) {
-        border-top: 2px solid #eee;
-        font-weight: bold;
-    }
-    
-    @media only screen and (max-width: 600px) {
-        .invoice-box table tr.top table td {
-            width: 100%;
-            display: block;
-            text-align: center;
-        }
-        
-        .invoice-box table tr.information table td {
-            width: 100%;
-            display: block;
-            text-align: center;
-        }
-    }
-    
-    /** RTL **/
-    .rtl {
-        direction: rtl;
-        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-    }
-    
-    .rtl table {
-        text-align: right;
-    }
-    
-    .rtl table tr td:nth-child(2) {
-        text-align: left;
+<head>
+
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<head>
+		{% if title %}
+		<title> {{ title }} </title>
+		{% else %}
+		<title>Ahodwproperties
+		</title>
+		{% endif %}
+	</head>
+	<style>
+		body {
+			background-image: url('static/logo1.PNG') no-repeat center/cover;
+
 		}
-		
-    </style>
-  
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="position: relative;">
-      <a class="navbar-brand" href="https://ahodwoproperties.com/" target="_blank" >
-        <img src="{% static 'logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-        Ahodwo Homes and Properties
-      </a>
-      <!-- Navbar Right Side -->
-      <div class="collapse navbar-collapse" id="navbarToggle">
-        <div class="navbar-nav mr-auto">
-          <a class="nav-item nav-link" href="{% url 'dashboard' %}" style="margin-left: 10px;">Dashboard</a>
-        </div>
-        <!-- Navbar Right Side -->
-        <div class="navbar-nav">
-          {% if user.is_authenticated %}
-          	<a class="nav-item nav-link" href="{% url 'logout' %}" style="margin-left: 870px;">Logout</a>
-          {% else %}
-            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-          {% endif %}
-        </div>
-      </div>
-      </div>
-    </nav>
-      
-      <!-- <div style="margin-left: 15px; margin-right: 15px">   -->
-				<body>
-					<div class="invoice-box">
-							<table cellpadding="0" cellspacing="0">
-									<tr class="top">
-											<td colspan="2">
-													<table>
-															<tr>
-																	<td class="title">
-																			<img src="{% static 'logo1.PNG' %}" style="width:50%; max-width:150px;">
-																	</td>
-																	
-																	<td>
-																			Invoice# AHP{{ data.invoice_number }}: <br>
-																			{{ data.date}}<br>
-																			Due: {{data.date}}
-																	</td>
-															</tr>
-													</table>
-											</td>
-									</tr>
-									
-									<tr class="information">
-											<td colspan="2">
-													<table>
-															<tr>
-																	<td>
-																		<strong>Billed By:</strong><br>
-																			Ahodwo Homes and Properties<br>
-																			Opposite Police Charge Office<br>
-																			Berekum, Brong Ahafo. <br>
-																			{{data.phone}} <br> <br>
-																			<strong>Payment for:  </strong>   
-																			{% if data.service != 'Registration ' %} 
-																				{{ data.description }}
-																			{% else %}
-																				{{ data.service }}
-																			{% endif %}
-			
-			
-			
-																	</td>
-																	
-																	<td>
-																			<strong>Billed To:</strong>
-								
-																			<br>
-																			{{data.first}} {{ data.last }} <br>
-																			{{ data.address}} <br>
-																			{{ data.contact }}
-																	</td>
-															</tr>
-													</table>
-											</td>
-									</tr>
-									
-									<tr class="heading">
-											<td>
-													Payment Method
-											</td>
-											
-											<td>
-													Check #
-											</td>
-									</tr>
-									
-									<tr class="details">
-											<td>
-													{{ data.method }}
-											</td>
-											
-											<td>
-													#
-											</td>
-									</tr>
-									
-									<tr class="heading">
-											<td>
-													Item
-											</td>
-											
-											<td>
-													Price
-											</td>
-									</tr>
-									
-									<tr class="item">
-											<td>
-													{{data.service}}
-											</td>
-											
-											<td>
-												₵{{data.cost}}
-											</td>
-									</tr>
-									{% if data.service != 'Registration ' %}
-											<tr class="item">
-													<td>
-															Service Charge ({{ data.charge }}%)
-													</td>
-													<td>
-														₵{{ data.charged }}
-													</td>
-											</tr>
-          				{% endif %}
-									
-									<tr class="total">
-											<td></td>
-											
-											<td>
-												 Total: ₵{{ data.charged }}
-											</td>
-									</tr>
-							</table>
-							<br>
-							{% if data.service != 'Registration ' %}
-								<strong><p>***Service charge is not refundable***</p></strong>
-          		{% endif %}
-							<p style="margin-top: 0;">* Invoice Prepared by: {{ data.agent }} *</p>
-							<p style="text-align: center;"> <strong style="text-align: center;">Thank You For Doing Business With us!</strong></p>
-							<p style="text-align: center;"> <strong style="text-align: center;">Serving Beyong Expectation!</strong></p>
-							
-					</div>
-			
-		
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
-      </div>
-    </div>
-  </div>
+
+		.invoice-box {
+			max-width: 800px;
+			margin: auto;
+			padding: 30px;
+			border: 1px solid #eee;
+
+			font-size: 16px;
+			line-height: 24px;
+			font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+			color: #555;
+		}
+
+		.invoice-box table {
+			width: 100%;
+			line-height: inherit;
+			text-align: left;
+		}
+
+		.invoice-box table td {
+			padding: 5px;
+			vertical-align: top;
+		}
+
+		.invoice-box table tr td:nth-child(2) {
+			text-align: right;
+		}
+
+		.invoice-box table tr.top table td {
+			padding-bottom: 10px;
+		}
+
+		.invoice-box table tr.top table td.title {
+			font-size: 10px;
+			line-height: 10px;
+			padding-top: 0;
+
+			color: #333;
+		}
+
+		.invoice-box table tr.information table td {
+			padding-bottom: 20px;
+		}
+
+		.invoice-box table tr.heading td {
+			background: #eee;
+			border-bottom: 1px solid #ddd;
+			font-weight: bold;
+		}
+
+		.invoice-box table tr.details td {
+			padding-bottom: 10px;
+		}
+
+		.invoice-box table tr.item td {
+			border-bottom: 0px solid #eee;
+		}
+
+		.invoice-box table tr.item.last td {
+			border-bottom: none;
+		}
+
+		.invoice-box table tr.total td:nth-child(2) {
+			border-top: 2px solid #eee;
+			font-weight: bold;
+		}
+
+		@media only screen and (max-width: 600px) {
+			.invoice-box table tr.top table td {
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+
+			.invoice-box table tr.information table td {
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+		}
+
+		/** RTL **/
+		.rtl {
+			direction: rtl;
+			font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+		}
+
+		.rtl table {
+			text-align: right;
+		}
+
+		.rtl table tr td:nth-child(2) {
+			text-align: left;
+		}
+	</style>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="position: relative;">
+		<a class="navbar-brand" href="https://ahodwoproperties.com/" target="_blank">
+			<img src="{% static 'logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+			Ahodwo Homes and Properties
+		</a>
+		<!-- Navbar Right Side -->
+		<div class="collapse navbar-collapse" id="navbarToggle">
+			<div class="navbar-nav mr-auto">
+				<a class="nav-item nav-link" href="{% url 'dashboard' %}" style="margin-left: 10px;">Dashboard</a>
+			</div>
+			<!-- Navbar Right Side -->
+			<div class="navbar-nav">
+				{% if user.is_authenticated %}
+				<a class="nav-item nav-link" href="{% url 'logout' %}" style="margin-left: 870px;">Logout</a>
+				{% else %}
+				<a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+				{% endif %}
+			</div>
+		</div>
+		</div>
+	</nav>
+
+	<!-- <div style="margin-left: 15px; margin-right: 15px">   -->
+
+<body>
+	<div class="invoice-box">
+		<table cellpadding="0" cellspacing="0">
+			<tr class="top">
+				<td colspan="2">
+					<table>
+						<tr>
+							<td class="title">
+								<img src="{% static 'logo1.PNG' %}" style="width:50%; max-width:150px;">
+							</td>
+
+							<td>
+								Invoice# AHP{{ data.invoice_number }}: <br>
+								{{ data.date}}<br>
+								Due: {{data.date}}
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+			<tr class="information">
+				<td colspan="2">
+					<table>
+						<tr>
+							<td>
+								<strong>Billed By:</strong><br>
+								Ahodwo Homes and Properties<br>
+								Opposite Police Charge Office<br>
+								Berekum, Brong Ahafo. <br>
+								{{data.phone}} <br> <br>
+								<strong>Payment for: </strong>
+								{% if data.service != 'Registration ' %}
+								{{ data.description }}
+								{% else %}
+								{{ data.service }}
+								{% endif %}
+
+
+
+							</td>
+
+							<td>
+								<strong>Billed To:</strong>
+
+								<br>
+								{{data.first}} {{ data.last }} <br>
+								{{ data.address}} <br>
+								{{ data.contact }}
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+			<tr class="heading">
+				<td>
+					Payment Method
+				</td>
+
+				<td>
+					Check #
+				</td>
+			</tr>
+
+			<tr class="details">
+				<td>
+					{{ data.method }}
+				</td>
+
+				<td>
+					#
+				</td>
+			</tr>
+
+			<tr class="heading">
+				<td>
+					Item
+				</td>
+
+				<td>
+					Price
+				</td>
+			</tr>
+
+			<tr class="item">
+				<td>
+					{{data.service}}
+				</td>
+
+				<td>
+					₵{{data.cost}}
+				</td>
+			</tr>
+			{% if data.service != 'Registration ' %}
+			<tr class="item">
+				<td>
+					Service Charge ({{ data.charge }}%)
+				</td>
+				<td>
+					₵{{ data.charged }}
+				</td>
+			</tr>
+			{% endif %}
+
+			<tr class="total">
+				<td></td>
+
+				<td>
+					Total: ₵{{ data.charged }}
+				</td>
+			</tr>
+		</table>
+		<br>
+		{% if data.service != 'Registration ' %}
+		<strong>
+			<p>***Service charge is not refundable***</p>
+		</strong>
+		{% endif %}
+		<p style="margin-top: 0;">* Invoice Prepared by: {{ data.agent }} *</p>
+		<p style="text-align: center;"> <strong style="text-align: center;">Thank You For Doing Business With us!</strong>
+		</p>
+		<p style="text-align: center;"> <strong style="text-align: center;"> <em>Serving Beyong Expectation!</em> </strong>
+		</p>
+
+	</div>
+
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+</body>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
-</html> 
- 
- 
- 
- 
- 
- 
- 
 
-
+</html>
