@@ -11,7 +11,9 @@ SECRET_KEY = 'chv@ccs=*gmglc%#+lp4#79e2__8)f#%kl2w0y*0&dk2z&8ew('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:9000"
+]
 
 
 # Application definition
