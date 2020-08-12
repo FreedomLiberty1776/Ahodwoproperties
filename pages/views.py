@@ -4,7 +4,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Task
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, AccountsSerializer
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from pages.models import Properties, Agent, Accounts, Transaction, Service, Property_type, Payment_method, Post_Ref, Business
@@ -363,6 +363,9 @@ def accounts(request):
 @login_required
 def tasks(request):
 	return render (request, 'pages/task.html' )
+@login_required
+def accounts_stats(request):
+	return render (request, 'pages/accounts_stats.html' )
 
 
 
@@ -416,6 +419,12 @@ def taskDelete (request, pk):
 	tasks = Task.objects.get(id=pk)
 	tasks.delete()
 	return Response('Task has been deleted')
+
+@api_view(['GET'])
+def accountsList (request):
+	accounts = Accounts.objects.all()
+	serializer= AccountsSerializer(accounts, many=True)
+	return Response(serializer.data)
 
 
 

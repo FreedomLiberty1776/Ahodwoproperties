@@ -1,0 +1,212 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+		url("./Great_Sand_Dunes_National_Park.jpg") center/cover no-repeat;
+	/* height: 30vh; */
+	color: white;
+	text-align: center;
+	padding: 3rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.incomeoutput {
+	display: flex;
+	background: lightseagreen;
+	margin: 0rem 0 0.5rem 0;
+	justify-content: space-between;
+	padding: 0.5rem 2rem 0.5rem 0.5rem;
+	/* min-width: 280px; */
+}
+
+.expensesoutput {
+	display: flex;
+	background: rgb(233, 54, 54);
+	justify-content: space-between;
+	padding: 0.5rem;
+	min-width: 300px;
+}
+
+.result {
+	margin: 1rem 0;
+	font-size: 2rem;
+}
+
+.expense-percent {
+	margin-left: 0.5rem;
+}
+
+.input {
+	text-align: center;
+	padding: 0.5rem 0;
+	background: rgb(230, 228, 228);
+}
+
+#submit {
+	/* border: 1px solid lightseagreen; */
+	border-radius: 50%;
+	padding: 0.1rem;
+	outline: none;
+	cursor: pointer;
+}
+
+.fa-check {
+	/* color: lightseagreen; */
+	font-size: 0.8rem;
+	outline: none;
+}
+
+.check-color {
+	color: lightseagreen;
+}
+
+.input-field {
+	padding: 0.4rem;
+
+	border-radius: 3px;
+	margin-right: 0.3rem;
+	outline: none;
+}
+
+.changer {
+	border: 1px solid lightgray;
+}
+
+.output {
+	padding-top: 1rem;
+	display: flex;
+	max-width: 70%;
+	margin: auto;
+	/* justify-content: space-between; */
+}
+
+.expenses-result,
+.income-result {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	/* background: green; */
+	margin: 1rem;
+	width: 100%;
+}
+
+#expense-li {
+	color: rgb(233, 54, 54);
+	/* border-bottom: 1px solid lightgray; */
+	padding: 1rem 0;
+}
+#income-li {
+	color: lightseagreen;
+	/* border-bottom: 1px solid lightgray; */
+	padding: 1rem 0;
+}
+
+.table {
+	padding: 0.5rem 0;
+	border-bottom: 1px solid lightgray;
+	padding: 1rem 0.5rem;
+	font-size: 0.8rem;
+	display: flex;
+	justify-content: space-between;
+	transition: all 0.3s linear;
+}
+
+table:nth-child(2) {
+	border-top: 1px solid lightgray;
+}
+
+li {
+	list-style-type: none;
+}
+
+.expenses-values {
+	color: red;
+}
+.income-values {
+	color: lightseagreen;
+}
+
+.expense-value {
+	color: white;
+	display: flex;
+	/* z-index: 1; */
+}
+
+.expense-percent {
+	display: block;
+	font-size: 0.7rem;
+	background: rgb(180, 155, 155);
+	padding: 0.1rem;
+	border-radius: 2px;
+	min-width: 25px;
+	transition: all 0.3s;
+}
+
+/* .expense-percentage {
+	margin-left: 0.5rem;
+} */
+
+.expenses-div {
+	color: red;
+	display: flex;
+}
+
+.income-values {
+	display: flex;
+}
+
+.fa-times {
+	padding: 0.15rem;
+	font-size: 0.5rem;
+	border: 1px solid red;
+	border-radius: 50%;
+	/* margin-left: 0.5rem; */
+	display: none;
+	transition: all 0.3s;
+}
+
+.green {
+	border: 1px solid lightseagreen;
+}
+
+.table:hover .fa-times {
+	display: block;
+}
+.table:hover .expense-percent {
+	margin-right: 0.5rem;
+}
+.table:hover .expenses-values {
+	margin-right: 0.5rem;
+}
+
+.expenses-values {
+	transition: all 0.3s linear;
+}
+
+.income-values {
+	transition: all 0.3s linear;
+}
+.table:hover .income-values {
+	margin-right: 0.5rem;
+}
+
+.border-color-green {
+	border: 1px solid lightseagreen;
+}
+.border-color-red {
+	border: 1px solid red;
+}
+.color-green {
+	color: lightseagreen;
+}
+.color-red {
+	color: red;
+}
