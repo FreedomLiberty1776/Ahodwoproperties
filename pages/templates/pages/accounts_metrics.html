@@ -1,7 +1,11 @@
 {% extends 'base.html'%} {% block content %} {% if last_balance %}
 <p> Account Balance:<strong> ₵{{ last_balance }}</strong> </p>
+
 <p> Available Balance:<strong> ₵{{ availabe_balance }}</strong> </p>
-{% endif %} {% if accounts_metrics %}
+
+{% endif %}
+<a id="accounts_stats" href="{% url 'accounts_stats' %}"> Summary</a>
+{% if accounts_metrics %}
 <div style="overflow-x: auto;">
 	<table class="table">
 		<thead>

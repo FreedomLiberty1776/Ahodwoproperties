@@ -363,6 +363,9 @@ def accounts(request):
 @login_required
 def tasks(request):
 	return render (request, 'pages/task.html' )
+
+
+	
 @login_required
 def accounts_stats(request):
 	return render (request, 'pages/accounts_stats.html' )
