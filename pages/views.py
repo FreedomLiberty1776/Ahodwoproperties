@@ -110,8 +110,12 @@ def properties(request):
 			owner = request.POST['owner'].lower()
 			contact = request.POST['contact']
 			price = request.POST['price']
+			handler = request.POST['handler']
+			is_listed = False
+			if  'listed' in request.POST:
+				is_listed =True
 			image = request.POST['image']
-			p = Properties(property_type=property_type, geolocation=geolocation, sub_area=sub_area, electorial_area=electorial_area, description=description, owner=owner, owner_contact=contact, price=price, image=image, property_id=property_id)
+			p = Properties(property_type=property_type, geolocation=geolocation, sub_area=sub_area, electorial_area=electorial_area, description=description, owner=owner, handler=handler, is_listed=is_listed, owner_contact=contact, price=price, image=image, property_id=property_id)
 			p.save()
 			trigger = {}
 			trigger['trigger'] = {

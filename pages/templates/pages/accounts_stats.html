@@ -14,6 +14,7 @@
 			href="{% static 'logo1.PNG' %}"
 			type="image/x-icon"
 		/>
+		<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
 
 		<title>Account Stats</title>
 		<style>
@@ -180,21 +181,21 @@
 				display: flex;
 			}
 
-			.fa-times {
+			/*.fa-times {
 				padding: 0.15rem;
 				font-size: 0.5rem;
 				border: 1px solid red;
 				border-radius: 50%;
-				/* margin-left: 0.5rem; */
+				 margin-left: 0.5rem; 
 				display: none;
 				transition: all 0.3s;
-			}
+			}*/
 
 			.green {
 				border: 1px solid lightseagreen;
 			}
 
-			.table:hover .fa-times {
+			/*.table:hover .fa-times {
 				display: block;
 			}
 			.table:hover .expense-percent {
@@ -213,7 +214,7 @@
 			}
 			.table:hover .income-values {
 				margin-right: 0.5rem;
-			}
+			}*/
 
 			.border-color-green {
 				border: 1px solid lightseagreen;
@@ -267,6 +268,30 @@
 					margin-bottom: 0.2rem;
 				}
 			}
+
+			.chart-container {
+				display: flex;
+				justify-content: center;
+				margin: 2rem;
+			}
+
+			#myChart {
+				transition: all 0.5s linear;
+
+				width: 95%;
+			}
+			#show-chart {
+				color: white;
+				background: #007bff;
+				display: inline-block;
+				margin-bottom: 1rem;
+				padding: 0.5rem;
+				border-radius: 5px;
+				outline: none;
+				border: none;
+				margin: 2rem auto;
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -288,11 +313,12 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="input">
 			<!-- <label for="month">Month</label> -->
 			<select name="" id="month" name="month" class="input-field changer">
 				<!-- <option value="debit">Month</option> -->
-				<option value="none">Month</option>
+				<option disabled selected value="none">Period</option>
 				<option value="all">All</option>
 				<option value="year">Year</option>
 				<option value="01 02 03">1-qtr</option>
@@ -332,6 +358,11 @@
 			<ul class="expenses-result">
 				<li id="expense-li">EXPENSES</li>
 			</ul>
+		</div>
+
+		<!-- <button id="show-chart">Show chart</button> -->
+		<div class="chart-container">
+			<div id="myChart"></div>
 		</div>
 
 		<div><p id="error-message">There is no summary for this period</p></div>
@@ -529,10 +560,13 @@
 									periodAccounts = accounts.filter((account) =>
 										account.transaction_date.includes(yearValue)
 									);
+
 									UI.populateUI(periodAccounts);
 									document.getElementById(
 										"description"
 									).textContent = `Accounts Summary for ${year}:`;
+
+									chart("year", accounts, year);
 								});
 								break;
 							case months.includes(period):
@@ -578,12 +612,158 @@
 
 			function getAccounts() {
 				return new Promise((resolve, reject) => {
-					fetch(`http://${document.domain}/accounts-list/`)
+					fetch(`http://${document.domain}:8000/accounts-list/`)
 						.then((res) => res.json())
 						.then((response) => resolve(response))
 						.catch((err) => reject(err));
 				});
 			}
+
+			//********* *** zingchart ********************
+
+			/*document.getElementById("show-chart").addEventListener("click", () => {
+										document.getElementById("myChart").style.height = "480px";
+									});*/
+
+			function chart(period, accounts, year) {
+				if (period === "year" && accounts.length > 0) {
+					//let zingPeriod = months.map((e) => `${year}-${e}`);
+					const periodDebit = {
+						Jan: 0,
+						Feb: 0,
+						Mar: 0,
+						Apr: 0,
+						May: 0,
+						Jun: 0,
+						Jul: 0,
+						Aug: 0,
+						Sep: 0,
+						Oct: 0,
+						Nov: 0,
+						Dec: 0,
+					};
+					const periodCredit = {
+						Jan: 0,
+						Feb: 0,
+						Mar: 0,
+						Apr: 0,
+						May: 0,
+						Jun: 0,
+						Jul: 0,
+						Aug: 0,
+						Sep: 0,
+						Oct: 0,
+						Nov: 0,
+						Dec: 0,
+					};
+
+					accounts.forEach((account) => {
+						//	console.log(account);
+						switch (true) {
+							case account.transaction_date.includes(year + "-01"):
+								periodDebit.Jan = periodDebit.Jan + parseFloat(account.debit);
+								periodCredit.Jan = periodCredit.Jan + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-02"):
+								periodDebit.Feb = periodDebit.Feb + parseFloat(account.debit);
+								periodCredit.Feb = periodCredit.Feb + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-03"):
+								periodDebit.Mar = periodDebit.Mar + parseFloat(account.debit);
+								periodCredit.Mar = periodCredit.Mar + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-04"):
+								periodDebit.Apr = periodDebit.Apr + parseFloat(account.debit);
+								periodCredit.Apr = periodCredit.Apr + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-05"):
+								periodDebit.May = periodDebit.May + parseFloat(account.debit);
+								periodCredit.May = periodCredit.May + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-06"):
+								periodDebit.Jun = periodDebit.Jun + parseFloat(account.debit);
+								periodCredit.Jun = periodCredit.Jun + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-07"):
+								periodDebit.Jul = periodDebit.Jul + parseFloat(account.debit);
+								periodCredit.Jul = periodCredit.Jul + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-08"):
+								periodDebit.Aug = periodDebit.Aug + parseFloat(account.debit);
+								periodCredit.Aug = periodCredit.Aug + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-09"):
+								periodDebit.Sep = periodDebit.Sep + parseFloat(account.debit);
+								periodCredit.Sep = periodCredit.Sep + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-10"):
+								periodDebit.Oct = periodDebit.Oct + parseFloat(account.debit);
+								periodCredit.Oct = periodCredit.Oct + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-11"):
+								periodDebit.Nov = periodDebit.Nov + parseFloat(account.debit);
+								periodCredit.Nov = periodCredit.Nov + parseFloat(account.credit);
+								break;
+							case account.transaction_date.includes(year + "-12"):
+								periodDebit.Dec = periodDebit.Dec + parseFloat(account.debit);
+								periodCredit.Dec = periodCredit.Dec + parseFloat(account.credit);
+								break;
+						}
+					});
+					console.log(periodDebit);
+					console.log(periodCredit);
+					var myConfig = {
+						type: "line",
+						plot: { aspect: "spline" },
+						title: {
+							text: `Income vs. Expense for the year ${year}.`,
+						},
+						plotarea: {
+							marginLeft: "5%",
+							marginRight: "5%",
+						},
+						legend: {},
+
+						scaleX: {
+							"items-overlap": true, //To allow scale labels to overlap.
+							"max-items": 12, //To set the number of scale labels displayed.
+							label: {
+								/* Add a scale title with a label object. */
+								text: `Months`,
+								"font-size": "14px",
+								"font-family": "arial",
+								bold: true,
+							},
+							/* Add your scale labels with a labels array. */
+							labels: Object.keys(periodCredit),
+						},
+
+						scaleY: {
+							label: {
+								text: "Ghana Cedi (₵)",
+								"font-family": "arial",
+								bold: true,
+								"font-size": "14px",
+							},
+						},
+						series: [
+							{ values: Object.values(periodCredit), text: "Income" },
+							{ values: Object.values(periodDebit), text: "Expenses" },
+						],
+					};
+
+					//********* *** zingchart *******************
+
+					zingchart.render({
+						id: "myChart",
+						data: myConfig,
+
+						width: "100%",
+					});
+				}
+			}
+
+			//********* ***End of zingchart *******************
 		</script>
 	</body>
 </html>
